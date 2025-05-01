@@ -7,16 +7,19 @@ Set the environment variable for the desired environment:
 - **Development environment**:
   ```powershell
   $env:ENV="dev"
+  $env:NODE_ENV="development"
   ```
 
 - **Production environment**:
   ```powershell
   $env:ENV="prod"
+  $env:NODE_ENV="production"
   ```
 
 - **Staging environment**:
   ```powershell
   $env:ENV="staging"
+  $env:NODE_ENV="staging"
   ```
 
 Then run:

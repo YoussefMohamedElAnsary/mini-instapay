@@ -1,7 +1,6 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+const bcrypt = require('bcryptjs');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -12,10 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // For example, if you create Transaction and PasswordReset models:
-      // User.hasMany(models.Transaction, { foreignKey: 'senderUserId', as: 'sentTransactions' });
-      // User.hasMany(models.Transaction, { foreignKey: 'receiverUserId', as: 'receivedTransactions' });
-      // User.hasOne(models.PasswordReset, { foreignKey: 'userId' });
+    }
+    
+    // Method to compare passwords
+    validPassword(password) {
+      return bcrypt.compareSync(password, this.password);
+    }
+    
+    // Method to return user data without sensitive info
+    toJSON() {
+      const values = Object.assign({}, this.get());
+      delete values.password;
+      return values;
     }
   }
   
@@ -44,7 +51,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: [6, 100] // Minimum password length
+      }
     },
     fullName: {
       type: DataTypes.STRING,
@@ -63,7 +73,19 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
     tableName: 'users',
-    timestamps: true
+    timestamps: true,
+    hooks: {
+      beforeCreate: async (user) => {
+        if (user.password) {
+          user.password = await bcrypt.hash(user.password, 10);
+        }
+      },
+      beforeUpdate: async (user) => {
+        if (user.changed('password')) {
+          user.password = await bcrypt.hash(user.password, 10);
+        }
+      }
+    }
   });
   
   return User;
