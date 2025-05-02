@@ -1,0 +1,38 @@
+#!/bin/bash
+set -e
+
+# Default to 'dev' if ENV is not set
+ENV=${ENV:-dev}
+
+# Create the admin role if it doesn't exist
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
+  DO
+  \$\$
+  BEGIN
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '${POSTGRES_ADMIN_USER}') THEN
+      CREATE ROLE ${POSTGRES_ADMIN_USER} WITH LOGIN PASSWORD '${POSTGRES_ADMIN_PASSWORD}';
+      ALTER ROLE ${POSTGRES_ADMIN_USER} WITH SUPERUSER;
+    END IF;
+  END
+  \$\$;
+EOSQL
+
+# Create the database user if it doesn't exist
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
+  DO
+  \$\$
+  BEGIN
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '${DB_USER}') THEN
+      CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';
+    END IF;
+  END
+  \$\$;
+EOSQL
+
+# Create service databases if they don't exist
+for db in "user-service-${ENV}" "transaction-service-${ENV}" "reporting-service-${ENV}"; do
+  psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -tc "SELECT 1 FROM pg_database WHERE datname = '$db'" | grep -q 1 || \
+  psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -c "CREATE DATABASE \"$db\" WITH OWNER = ${DB_USER};"
+done
+
+echo "Admin role, service databases, and user created successfully"
