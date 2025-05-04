@@ -23,6 +23,7 @@ function ProfileTab({ setActiveTab}) {
           type={"text"}
           value={"Mohamed ahmed fathy"}
           readOnly
+          className=''
         />
 
         <Phoneinput

@@ -7,6 +7,8 @@ import Home from './pages/Home'
 import Transactions from './pages/Transactions'
 import Settings from './pages/Settings'
 import Report from './pages/Report'
+import Layout from './components/Layout';
+
 
 function App() {
 
@@ -14,18 +16,22 @@ function App() {
 
     <Router>
       <Routes>
-        <Route path='/welcome' element={<Welcome/>} />
-        <Route path='/login' element={<Login/>} />
-        <Route path='/register' element={<Register/>} />
-        <Route path='/home' element={<Home/>} />
-        <Route path='/transactions' element={<Transactions/>} />
-        <Route path='/settings' element={<Settings/>} />
-        <Route path='/report' element={<Report/>} />
 
-      
+        {/* Public Routes */}
+        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-        <Route path='/' element={<Navigate to="/home"/>} />
-        <Route path='*' element={<h1>404 page not found</h1>} />
+        {/* Protected Routes with shared layout */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Navigate to="/home" />} />
+          <Route path="home" element={<Home />} />
+          <Route path="transactions" element={<Transactions />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="report" element={<Report />} />
+        </Route>
+
+        <Route path="*" element={<h1>404 page not found</h1>} />
 
       </Routes>
     </Router>

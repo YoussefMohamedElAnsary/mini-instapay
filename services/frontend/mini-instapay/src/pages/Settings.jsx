@@ -17,10 +17,6 @@ function Settings() {
   return (
     <>
 
-      <div className="  flex  ">
-              
-        <Sidebar/>  
-
         <div className=" flex-1 flex flex-col gap-12 items-center p-5"> 
 
             <Topusername/>
@@ -39,7 +35,7 @@ function Settings() {
             </div>
 
          </div>
-      </div>
+
 
     </>
   )

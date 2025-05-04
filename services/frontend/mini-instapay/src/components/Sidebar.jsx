@@ -40,23 +40,23 @@ function Sidebar() {
         `}
       >
         <div className="flex flex-col gap-2">
-          <h2 className="text-3xl xl:text-5xl font-bold text-[#99C445]">FlowPay</h2>
+          <h2 onClick={()=>navigate("/home")} className="text-3xl xl:text-5xl font-bold text-[#99C445]">FlowPay</h2>
           <span className="text-2xl xl:text-4xl text-[#5E99CA]">Menu</span>
         </div>
 
         <ul className="flex flex-col gap-3 text-lg xl:text-2xl font-medium">
 
             <Link to="/home">
-                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#5e99ca72]
-                        ${location.pathname === '/home' ? 'bg-[#5e99ca72] font-bold ' : ''}
+                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#9BC3E3]
+                        ${location.pathname === '/home' ? 'bg-[#9BC3E3] font-bold ' : ''}
                     `}>
                     <img className="w-6 xl:w-10" src={homeicon} alt="transaction" />
                     Home
                 </li>
             </Link>
             <Link to="/transactions">
-                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#5e99ca72]
-                        ${location.pathname === '/transactions' ? 'bg-[#5e99ca72] font-bold ' : ''}
+                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#9BC3E3]
+                        ${location.pathname === '/transactions' ? 'bg-[#9BC3E3] font-bold ' : ''}
                     `}>
                     <img className="w-6 xl:w-fit" src={transactionsicon} alt="transaction" />
                     
@@ -64,17 +64,17 @@ function Sidebar() {
                 </li>
             </Link>
             <Link to="/settings">
-                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#5e99ca72]
-                        ${location.pathname === '/settings' ? 'bg-[#5e99ca72] font-bold ' : ''}
+                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#9BC3E3]
+                        ${location.pathname === '/settings' ? 'bg-[#9BC3E3] font-bold ' : ''}
                     `}>
                     <img className="w-6 xl:w-fit" src={settingicon} alt="settings" />
                     
-                    Settings
+                    Profile
                 </li>
             </Link>
             <Link to="/report">
-                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#5e99ca72]
-                        ${location.pathname === '/report' ? 'bg-[#5e99ca72] font-bold ' : ''}
+                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#9BC3E3]
+                        ${location.pathname === '/report' ? 'bg-[#9BC3E3] font-bold ' : ''}
                     `}>
                     <img className="w-6 xl:w-fit" src={Reportsicon} alt="report" />
                     
@@ -87,10 +87,9 @@ function Sidebar() {
         <div className="mt-auto">
           <Button
             onClick={() => navigate("/welcome")}
-            className="flex gap-2 justify-center items-center "
+            className="flex gap-2 justify-center items-center  text-white"
             type={"logout"}
-            color={"[#99C445]"}
-            textcolor={"white"}
+            color={"[#5E99CA]"}
           >
             <FontAwesomeIcon icon={faRightFromBracket} />
               Log Out

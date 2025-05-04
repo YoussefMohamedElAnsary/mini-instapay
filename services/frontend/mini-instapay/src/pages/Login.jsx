@@ -95,9 +95,8 @@ function Login() {
               />
 
               <Button type={'submit'} 
-                className=' hover:bg-[#9ac445e9]' 
+                className=' hover:bg-[#9ac445e9] text-[white]' 
                 color={"[#99C445]"} 
-                textcolor={"white"} 
               >
                 Login  
 

@@ -35,6 +35,11 @@ services:
       - user-service
       - transaction-service
       - reporting-service
+    environment:
+      # - VITE_API_URL=${VITE_API_URL}
+      - NODE_ENV=${NODE_ENV}
+    env_file:
+      - ./envs/.env.dev
 
   user-service:
     build:

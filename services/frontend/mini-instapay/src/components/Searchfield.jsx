@@ -7,8 +7,8 @@ function Searchfield(  {placeholder , value , onChange}  ) {
 
   return (
     <>
-        <div className="px-4 py-2 bg-blue-200 flex items-center gap-2 rounded-xl">
-            <FontAwesomeIcon icon={faMagnifyingGlass} className='text-blue-400' />
+        <div className="px-4 py-2 bg-[#D2E4FF] flex items-center gap-2 rounded-xl">
+            <FontAwesomeIcon icon={faMagnifyingGlass} className='text-[#5E99CA]' />
           
             <input
              type="text" 

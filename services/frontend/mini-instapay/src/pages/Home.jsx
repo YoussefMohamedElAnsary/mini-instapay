@@ -7,8 +7,12 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import SendMoneyModal from "./SendMoneyModal";
 import { useState } from "react";
 import Topusername from "../components/Topusername";
+import { useNavigate } from "react-router-dom";
 function Home() {
 
+  const navigate = useNavigate();
+
+    
     const [transactionData , settransactionData] = useState(
         [
             {
@@ -102,9 +106,7 @@ function Home() {
  
     return (
     <>
-        <div className="  flex  h-screen overflow-hidden ">  
 
-            <Sidebar/>  
 
             <div className=" relative overflow-y-auto  flex-1 flex flex-col gap-4 items-center p-5">
 
@@ -121,31 +123,31 @@ function Home() {
 
                     <div className="buttonsgroup grid grid-rows-2 grid-cols-2  gap-x-10 lg:gap-x-18  xl:gap-x-28  gap-y-5 ">
                         <Homebutton
-                            onClick={openSendMoneyModal }
+                            onClick={openSendMoneyModal}
                             text={"send"}
                             icon={faUser}
                             color={"[#99C445]"}
                             textcolor={"black"}
                             />
                         <Homebutton
-                            onClick={()=>console.log("send")}
+                            onClick={()=>navigate("/transactions")}
                             text={"Receive"}
                             icon={faUser}
-                            color={"[#99C445]"}
+                            color={"[#5E99CA]"}
                             textcolor={"black"}
                             />
                         <Homebutton
-                            onClick={()=>console.log("send")}
+                            onClick={()=>navigate("/transactions")}
                             text={"Payments"}
                             icon={faUser}
-                            color={"[#99C445]"}
+                            color={"[#9BC3E3]"}
                             textcolor={"black"}                        
                             />
                         <Homebutton
-                            onClick={()=>console.log("send")}
+                            onClick={()=>navigate("/report")}
                             text={"Reporting"}
                             icon={faUser}
-                            color={"[#99C445]"}
+                            color={"[#95AD67]"}
                             textcolor={"black"}                        
                             />
                     </div>
@@ -167,10 +169,6 @@ function Home() {
                 )}
 
             </div>
-
-
-        </div>
-
 
 
     </>

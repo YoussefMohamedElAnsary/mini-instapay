@@ -132,9 +132,7 @@ useEffect(() => {
   return (
     <>
       
-      <div className="  flex h-screen overflow-hidden  ">
-        
-        <Sidebar/>  
+
 
         <div className=" overflow-y-auto flex-1 flex flex-col gap-8 items-center p-5"> 
 
@@ -158,10 +156,6 @@ useEffect(() => {
 
 
         </div>
-
-
-      </div>  
-
 
 
     </>

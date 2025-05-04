@@ -6,13 +6,13 @@ function SettingstabSwitcher( {activeTab , setActiveTab} ) {
         <ul className="flex gap-18 text-sm   md:text-lg  lg:text-xl ">
             <li 
               onClick={()=>setActiveTab("Profile")} 
-              className={ ` ${activeTab ==='Profile' ? ' bg-[#5e99ca72]' : ''} px-5 py-1 rounded-2xl  cursor-pointer hover:bg-blue-50 `} 
+              className={ ` ${activeTab ==='Profile' ? ' bg-[#99C445]' : ''} px-5 py-1 rounded-2xl  cursor-pointer  `} 
             >
               Profile
             </li>
             <li 
               onClick={()=> setActiveTab("Security")} 
-              className={ ` ${activeTab ==='Security' ? '  bg-[#5e99ca72]' : ''} px-5 p-1 rounded-2xl cursor-pointer hover:bg-blue-50`}
+              className={ ` ${activeTab ==='Security' ? '  bg-[#99C445]' : ''} px-5 p-1 rounded-2xl cursor-pointer`}
             >
               Security
             </li>
