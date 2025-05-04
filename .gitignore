@@ -32,3 +32,5 @@ __tests__
 *.sublime-*
 *.swp
 *.swo
+
+secrets.yaml

@@ -41,29 +41,32 @@ module.exports = (sequelize, DataTypes) => {
         len: [3, 30]
       }
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true
-      }
-    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [6, 100] // Minimum password length
+        len: [6, 100]
       }
     },
-    fullName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
+
     phoneNumber: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
+    },
+    pin:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [4, 4]
+      }     
+    },
+    cardNumber:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [16, 16]
+      }     
     },
     balance: {
       type: DataTypes.DECIMAL(10, 2),

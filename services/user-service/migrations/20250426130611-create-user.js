@@ -14,19 +14,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          isEmail: true,
-        },
-      },
       password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      fullName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -34,6 +22,20 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+      },
+      pin:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [4, 4]
+        }     
+      },
+      cardNumber:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [16, 16]
+        }     
       },
       balance: {
         type: DataTypes.DECIMAL(10, 2),
