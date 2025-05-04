@@ -5,31 +5,31 @@ const authConfig = require('../../config/auth');
 
 exports.register = async (req, res) => {
   try {
-    const { username, email, password, fullName, phoneNumber } = req.body;
+    const { username, password, phoneNumber, cardNumber, pin } = req.body;
 
     // Check if email or username already exists
     const existingUser = await User.findOne({
       where: {
-        [Op.or]: [{ email }, { username }]
+        [Op.or]: [{ phoneNumber }, { username }]
       }
     });
 
     if (existingUser) {
       return res.status(400).json({ 
-        error: 'User with this email or username already exists' 
+        error: 'User with this phone number or username already exists' 
       });
     }
 
     const user = await User.create({
       username,
-      email,
       password,
-      fullName,
-      phoneNumber
+      phoneNumber,
+      cardNumber,
+      pin
     });
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, phoneNumber: user.phoneNumber },
       authConfig.secret,
       { expiresIn: authConfig.expiresIn }
     );
@@ -47,9 +47,9 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { phoneNumber, password } = req.body;
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { phoneNumber } });
 
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -60,7 +60,7 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, phoneNumber: user.phoneNumber },
       authConfig.secret,
       { expiresIn: authConfig.expiresIn }
     );
