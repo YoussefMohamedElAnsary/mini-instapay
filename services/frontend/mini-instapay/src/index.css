@@ -1,9 +1,18 @@
 @import "tailwindcss";
 
+body {
+  background-color: theme('colors.background.light');
+  color: theme('colors.text.light');
+}
 
+.dark body {
+  background-color: theme('colors.background.dark');
+  color: theme('colors.text.dark');
+}
 
-body{
-    background-color: rgb(241, 241, 241);
+/* Add smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 

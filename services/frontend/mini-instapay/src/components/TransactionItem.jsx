@@ -4,7 +4,7 @@ function  TransactionItem ({ transaction, img }) {
   return (
     <>
 
-    <div className="flex gap-3 items-center p-1 px-2 rounded-xl text-sm md:text-2l md:text-base xl:text-lg hover:bg-[#D2E4FF]">
+    <div className="flex gap-3 items-center py-2 px-4 rounded-xl text-sm md:text-2l md:text-base xl:text-lg hover:bg-[#D2E4FF]">
       <img src={img} alt="img" className="w-12" />
 
       <div className="flex flex-col">
