@@ -160,12 +160,12 @@ function Home() {
                 
 
                 {issendModalOpen && (
-                    <SendMoneyModal 
-                    isOpen={issendModalOpen} 
-                    step={step}
-                    setStep={setStep} 
-                    closeModal={closeModal}
-                    />
+                <SendMoneyModal 
+                  isOpen={issendModalOpen} 
+                  step={step}
+                  setStep={setStep} 
+                  closeModal={closeModal}
+                />
                 )}
 
             </div>

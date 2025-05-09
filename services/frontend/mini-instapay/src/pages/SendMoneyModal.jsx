@@ -74,7 +74,7 @@ if (!isOpen) return null;
       <div className="fixed inset-0 bg-black opacity-25 z-40"></div>
 
 
-      <div className="absolute inset-0 flex  justify-center z-50 w-[60%]  h-fit p-6 m-auto rounded-xl shadow-2xl bg-white">
+      <div className="absolute top-36 flex  justify-center z-50 w-[60%]  h-fit p-6 m-auto rounded-xl shadow-2xl bg-white">
 
         <button onClick={handleCancel}  className= "cursor-pointer hover:bg-red-500 absolute text-4xl right-6 border-2 w-10 h-10 rounded-4xl flex items-center justify-center "> 
           <FontAwesomeIcon icon={faXmark} /> 
