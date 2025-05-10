@@ -9,6 +9,8 @@ import closedeye from '..//assets/crossed-eye.png'
 import Arrow from '../components/arrow'
 import { useState } from 'react'
 
+import authService from '../services/uthService'
+
 function Signup() {
 
 
@@ -22,11 +24,12 @@ function Signup() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
   
-    const [pinValue, setPinValue] = useState('');
-    const [fullname, setfullname] = useState('');
+    const [pin, setPin] = useState('');
+    const [username, setUsername] = useState('');
+    const [cardNumber, setCardNumber] = useState('');
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
       setError('');
     
@@ -60,23 +63,40 @@ function Signup() {
         return;
       }
     
-      if (pinValue.length < 4) {
+      if (pin.length < 4) {
         setError('PIN is required');
+        return;
+      }
+
+      if (!cardNumber.trim()) {
+        setError('Card number is required');
         return;
       }
     
       setLoading(true);
+
+      try {
     
-      setTimeout(() => {
-        console.log(fullname, phoneNumber, password, confirmpassword, pinValue);
+        const response = await authService.register(username, phoneNumber, password, pin, cardNumber);
+        console.log(response);
         setLoading(false);
-        setfullname('');
-        setPassword('');
-        setPhoneNumber('');
-        setconfirmpassword('');
-        setPinValue('');
-        navigate('/login')
-      }, 1000);
+        setError('');
+        console.log(username, phoneNumber, password, confirmpassword, pin, cardNumber);
+        // Registration successful - redirect to login
+        navigate('/login');
+      } catch (error) {
+        console.error('Registration error:', error);
+        
+        if (error.response && error.response.data && error.response.data.message) {
+          setError(error.response.data.message);
+        } else {
+          setError('Registration failed. Please try again.');
+        }
+
+        setLoading(false);
+      }
+
+     
 
 
     };
@@ -102,11 +122,11 @@ function Signup() {
             <div className='flex flex-col items-start  gap-5'>
 
             <Inputfield
-              label={"Enter your full name"}
-              placeholder={"EG. Ahmed Ali Osama Fawzi"}
+              label={"Enter your username"}
+              placeholder={"EG. AhmedAli"}
               type={"text"}
-              value={fullname}
-              onChange={(e)=>{setfullname(e.target.value)}}
+              value={username}
+              onChange={(e)=>{setUsername(e.target.value)}}
             />
 
               <Phoneinput
@@ -115,6 +135,14 @@ function Signup() {
                 label={"Phone Number"}
                 placeholder={"01549384592"}
                 onChange={(e)=> setPhoneNumber(e.target.value)}
+              />
+
+              <Inputfield
+                label={"Card Number"}
+                placeholder={"Enter your card number"}
+                type={"text"}
+                value={cardNumber}
+                onChange={(e)=>{setCardNumber(e.target.value)}}
               />
 
               <Passwordinput
@@ -139,8 +167,8 @@ function Signup() {
 
 
               <PinInput 
-                value={pinValue} 
-                onChange={setPinValue} 
+                value={pin} 
+                onChange={setPin} 
                 label={"your PIN code"}
                 maxLength={4} 
               />

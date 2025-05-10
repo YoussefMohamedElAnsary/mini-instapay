@@ -3,20 +3,20 @@ import Button from '../components/Button'
 import Passwordinput from '../components/PasswordInput'
 import Phoneinput from '../components/Phoneinput'
 import { useState } from 'react'
-
 import openeye from '..//assets/eye.png'
 import closedeye from '..//assets/crossed-eye.png'
-
 import Arrow from '../components/arrow'
+
+import  authService  from '../services/uthService';
 
 
 
 function Login() {
 
-  const [showpassword, setShowPassword] = useState(false)
-
   const navigate = useNavigate()
 
+
+  const [showpassword, setShowPassword] = useState(false)
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -24,7 +24,7 @@ function Login() {
 
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     setError('');
@@ -44,19 +44,32 @@ function Login() {
       return;
     }
 
-
     setLoading(true)
 
-    setTimeout(() => {
-      console.log(phoneNumber, password);
-      setLoading(false);
-      setPassword('')
-      setPhoneNumber('')
-      navigate('/')
-    }, 2000); // simulate 2s loading
 
- 
-    
+    try {
+  
+        const response = await authService.login(phoneNumber, password);
+        console.log('Login response:', response);
+        
+        if (response && response.data) {
+            setLoading(false);
+            setError('');
+            navigate('/');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        
+        if (error.response && error.response.data && error.response.data.message) {
+          setError(error.response.data.message);
+        } else {
+          setError('Login failed. Please try again.');
+        }
+
+        setLoading(false);
+    }
+
+
   }
 
 
