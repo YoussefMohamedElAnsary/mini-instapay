@@ -5,7 +5,7 @@ services:
   postgres:
     image: postgres:17
     ports:
-      - 80:80
+      - 5432:5432
     env_file: ./envs/.env.${ENV}
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -55,7 +55,7 @@ services:
     networks:
       - instapay-net
     environment:
-      - DB_HOST=postgres 
+      - DB_HOST=${DB_HOST} 
       - DB_NAME=user-service-${ENV}
       - DB_NAME_USER_SERVICE=user-service-${ENV}
       - NODE_ENV=${ENV}
@@ -74,7 +74,7 @@ services:
     networks:
       - instapay-net
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=${DB_HOST}
       - DB_NAME=transaction-service-${ENV}
       - DB_NAME_TRANSACTION_SERVICE=transaction-service-${ENV}
       - NODE_ENV=${ENV}
@@ -93,7 +93,7 @@ services:
     networks:
       - instapay-net
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=${DB_HOST}
       - DB_NAME=reporting-service-${ENV}
       - DB_NAME_REPORTING_SERVICE=reporting-service-${ENV}
       - NODE_ENV=${ENV}
@@ -107,7 +107,7 @@ services:
     networks:
       - instapay-net
     environment:
-      - DB_HOST=postgres 
+      - DB_HOST=${DB_HOST} 
       - DB_NAME=user-service-${ENV}
       - DB_NAME_USER_SERVICE=user-service-${ENV}
       - NODE_ENV=${ENV}
@@ -122,7 +122,7 @@ services:
     networks:
       - instapay-net
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=${DB_HOST}
       - DB_NAME=transaction-service-${ENV}
       - DB_NAME_TRANSACTION_SERVICE=transaction-service-${ENV}
       - NODE_ENV=${ENV}
@@ -137,7 +137,7 @@ services:
     networks:
       - instapay-net
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=${DB_HOST}
       - DB_NAME=reporting-service-${ENV}
       - DB_NAME_REPORTING_SERVICE=reporting-service-${ENV}
       - NODE_ENV=${ENV}
