@@ -11,16 +11,17 @@ import { useState } from 'react'
 
 import authService from '../services/uthService'
 
+
+
 function Signup() {
 
 
-    const [showpassword, setShowPassword] = useState(false)
-  
-    const navigate = useNavigate()
-  
+  const navigate = useNavigate()
+
+    const [showpassword, setShowPassword] = useState(false)  
     const [phoneNumber, setPhoneNumber] = useState('')
     const [password, setPassword] = useState('')
-    const [confirmpassword, setconfirmpassword] = useState('')
+    // const [confirmpassword, setconfirmpassword] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
   
@@ -58,10 +59,10 @@ function Signup() {
         return;
       }
     
-      if (password !== confirmpassword) {
-        setError('Passwords do not match');
-        return;
-      }
+      // if (password !== confirmpassword) {
+      //   setError('Passwords do not match');
+      //   return;
+      // }
     
       if (pin.length < 4) {
         setError('PIN is required');
@@ -81,8 +82,7 @@ function Signup() {
         console.log(response);
         setLoading(false);
         setError('');
-        console.log(username, phoneNumber, password, confirmpassword, pin, cardNumber);
-        // Registration successful - redirect to login
+        
         navigate('/login');
       } catch (error) {
         console.error('Registration error:', error);
@@ -155,7 +155,7 @@ function Signup() {
                 oneyeClick={() => setShowPassword(!showpassword)}
               />
 
-              <Passwordinput
+              {/* <Passwordinput
                 type={showpassword ? "text" : "password"}
                 value={confirmpassword}
                 label={"Confirm Password"}
@@ -163,7 +163,7 @@ function Signup() {
                 onChange={(e)=> setconfirmpassword(e.target.value)}
                 src={showpassword ? openeye : closedeye}
                 oneyeClick={() => setShowPassword(!showpassword)}
-              />
+              /> */}
 
 
               <PinInput 

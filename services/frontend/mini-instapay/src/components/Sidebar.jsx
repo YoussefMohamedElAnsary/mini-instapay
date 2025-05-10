@@ -10,11 +10,23 @@ import { faRightFromBracket, faBars } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
+import { AuthContext } from '../context/AuthContext';
+import { useContext } from 'react';
+
+
+
 function Sidebar() {
+
+  const {logout} = useContext(AuthContext)
+
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-
   const location = useLocation();
+
+  const handlelogout = () => {
+    logout()
+    navigate('/welcome')
+  }
 
 
   return (
@@ -86,7 +98,7 @@ function Sidebar() {
 
         <div className="mt-auto">
           <Button
-            onClick={() => navigate("/welcome")}
+            onClick={handlelogout}
             className="flex gap-2 justify-center items-center  text-white"
             type={"logout"}
             color={"[#5E99CA]"}

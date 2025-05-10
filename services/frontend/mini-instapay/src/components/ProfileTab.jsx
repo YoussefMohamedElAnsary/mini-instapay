@@ -4,7 +4,13 @@ import Passwordinput from '../components/PasswordInput'
 import Phoneinput from '../components/Phoneinput'
 import Inputfield from '../components/Inputfield'
 
+import { AuthContext } from '../context/AuthContext';
+import { useContext } from 'react';
+
+
 function ProfileTab({ setActiveTab}) {
+
+  const {user} = useContext(AuthContext)
 
 
 
@@ -21,14 +27,14 @@ function ProfileTab({ setActiveTab}) {
         <Inputfield
           label={"Your Name"}
           type={"text"}
-          value={"Mohamed ahmed fathy"}
+          value={user.username}
           readOnly
           className=''
         />
 
         <Phoneinput
           type={"tel"}
-          value={"01151155566"}
+          value={user.phoneNumber}
           label={"Phone Number"}
           placeholder={"01549384592"}
         />
@@ -36,7 +42,7 @@ function ProfileTab({ setActiveTab}) {
         <Inputfield
           label={"Card Number"}
           type={"text"}
-          value={"845672115792486"}
+          value={user.cardNumber}
           readOnly
         />
 

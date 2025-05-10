@@ -8,6 +8,8 @@ import Settings from './pages/Settings'
 import Report from './pages/Report'
 import Layout from './components/Layout';
 
+import PrivateRoute from './components/PrivateRoute'
+
 
 function App() {
 
@@ -22,12 +24,14 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* Protected Routes with shared layout */}
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/home" />} />
-          <Route path="home" element={<Home />} />
-          <Route path="transactions" element={<Transactions />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="report" element={<Report />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Navigate to="/home" />} />
+            <Route path="home" element={<Home />} />
+            <Route path="transactions" element={<Transactions />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="report" element={<Report />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<h1>404 page not found</h1>} />

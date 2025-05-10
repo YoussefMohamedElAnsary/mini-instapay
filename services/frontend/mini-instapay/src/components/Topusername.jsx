@@ -7,7 +7,7 @@ function Topusername( {username} ) {
   return (
     
     <div className="  self-end flex gap-2 items-center  text-sm   md:text-xl font-bold">
-        <span>Mohamed Ahmed</span>
+        <span>{username}</span>
         <FontAwesomeIcon icon={faUser} onClick={()=> navigate("/settings")} />
     </div>
   )

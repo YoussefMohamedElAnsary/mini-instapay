@@ -3,9 +3,15 @@ import Topusername from "../components/Topusername"
 import Searchfield from "../components/Searchfield"
 import Recenttransactions from "../components/Recenttransactions"
 import { useEffect, useState } from "react"
+import { AuthContext } from '../context/AuthContext';
+import { useContext } from 'react';
+
 
 function Transactions() {
 
+
+  const {user} = useContext(AuthContext)
+  
   const [transactionData , settransactionData] = useState(
     [
         {
@@ -132,30 +138,18 @@ useEffect(() => {
   return (
     <>
       
+      <div className=" flex flex-col w-11/12  gap-8">
 
+        {/* fe moshkla fe loggic el search zabatha matnsash */}
+        <Searchfield  
+          value={searchvalue}
+          onChange={(e) => setSearchvalue(e.target.value)}
+          placeholder={"Search by name, status, or type"}
+        />
 
-        <div className=" overflow-y-auto flex-1 flex flex-col gap-8 items-center p-5"> 
+        <Recenttransactions data={filteredTransactions}/>
 
-            <Topusername/>
-
-            <div className=" flex flex-col w-11/12  gap-8">
-
-
-            {/* fe moshkla fe loggic el search zabatha matnsash */}
-
-            <Searchfield  
-              value={searchvalue}
-              onChange={(e) => setSearchvalue(e.target.value)}
-              placeholder={"Search by name, status, or type"}
-            />
-
-            <Recenttransactions data={filteredTransactions}/>
-
-
-            </div>
-
-
-        </div>
+      </div>
 
 
     </>

@@ -6,11 +6,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import SendMoneyModal from "./SendMoneyModal";
 import { useState } from "react";
-import Topusername from "../components/Topusername";
 import { useNavigate } from "react-router-dom";
+
+
+import { AuthContext } from '../context/AuthContext';
+import { useContext } from "react";
+import { useEffect } from "react";
+
 function Home() {
 
+  const {user} = useContext(AuthContext)
+
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    console.log(user)
+  },[user])
+
 
     
     const [transactionData , settransactionData] = useState(
@@ -102,73 +114,68 @@ function Home() {
 
     };
  
- 
+
+    if (!user) return <div>Loading...</div>; 
  
     return (
     <>
 
+      <div className="flex flex-col w-11/12  gap-8">
 
-            <div className=" relative overflow-y-auto  flex-1 flex flex-col gap-4 items-center p-5">
-
-                <Topusername/>
-
-                <div className="flex flex-col w-11/12  gap-8">
-
-                    
-                    <div className="balance flex flex-col items-center">
-                        <span className="text-l font-medium text-[#8D8D8D]"> Total Balance (EGP) </span>
-                        <span className="  text-2xl  lg:text-4xl font-bold text-[#0E0E0E]"> EGP5250.00 </span>
-                    </div>
+          
+          <div className="balance flex flex-col items-center">
+              <span className="text-l font-medium text-[#8D8D8D]"> Total Balance (EGP) </span>
+              <span className="  text-2xl  lg:text-4xl font-bold text-[#0E0E0E]"> EGP {user.balance} </span>
+          </div>
 
 
-                    <div className="buttonsgroup grid grid-rows-2 grid-cols-2  gap-x-10 lg:gap-x-18  xl:gap-x-28  gap-y-5 ">
-                        <Homebutton
-                            onClick={openSendMoneyModal}
-                            text={"send"}
-                            icon={faUser}
-                            color={"[#99C445]"}
-                            textcolor={"black"}
-                            />
-                        <Homebutton
-                            onClick={()=>navigate("/transactions")}
-                            text={"Receive"}
-                            icon={faUser}
-                            color={"[#5E99CA]"}
-                            textcolor={"black"}
-                            />
-                        <Homebutton
-                            onClick={()=>navigate("/transactions")}
-                            text={"Payments"}
-                            icon={faUser}
-                            color={"[#9BC3E3]"}
-                            textcolor={"black"}                        
-                            />
-                        <Homebutton
-                            onClick={()=>navigate("/report")}
-                            text={"Reporting"}
-                            icon={faUser}
-                            color={"[#95AD67]"}
-                            textcolor={"black"}                        
-                            />
-                    </div>
+          <div className="buttonsgroup grid grid-rows-2 grid-cols-2  gap-x-10 lg:gap-x-18  xl:gap-x-28  gap-y-5 ">
+              <Homebutton
+                  onClick={openSendMoneyModal}
+                  text={"send"}
+                  icon={faUser}
+                  color={"[#99C445]"}
+                  textcolor={"black"}
+                  />
+              <Homebutton
+                  onClick={()=>navigate("/transactions")}
+                  text={"Receive"}
+                  icon={faUser}
+                  color={"[#5E99CA]"}
+                  textcolor={"black"}
+                  />
+              <Homebutton
+                  onClick={()=>navigate("/transactions")}
+                  text={"Payments"}
+                  icon={faUser}
+                  color={"[#9BC3E3]"}
+                  textcolor={"black"}                        
+                  />
+              <Homebutton
+                  onClick={()=>navigate("/report")}
+                  text={"Reporting"}
+                  icon={faUser}
+                  color={"[#95AD67]"}
+                  textcolor={"black"}                        
+                  />
+          </div>
 
 
-                    <div className="recenttransactionsec">
-                        <Recenttransactions data={transactionData} displayLimit={4}/>
-                    </div>
-                </div>
-                
+          <div className="recenttransactionsec">
+              <Recenttransactions data={transactionData} displayLimit={4}/>
+          </div>
+      </div>
+      
 
-                {issendModalOpen && (
-                <SendMoneyModal 
-                  isOpen={issendModalOpen} 
-                  step={step}
-                  setStep={setStep} 
-                  closeModal={closeModal}
-                />
-                )}
+      {issendModalOpen && (
+      <SendMoneyModal 
+        isOpen={issendModalOpen} 
+        step={step}
+        setStep={setStep} 
+        closeModal={closeModal}
+      />
+      )}
 
-            </div>
 
 
     </>

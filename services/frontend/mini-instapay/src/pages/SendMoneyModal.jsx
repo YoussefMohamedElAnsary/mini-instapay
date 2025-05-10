@@ -7,6 +7,8 @@ import doneimg from "../assets/9933421_4300520 1.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
+
+
 function SendMoneyModal({ isOpen, step , setStep , closeModal }) {
 
   const [amount , setAmount] = useState("")

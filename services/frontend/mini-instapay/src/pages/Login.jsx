@@ -7,12 +7,15 @@ import openeye from '..//assets/eye.png'
 import closedeye from '..//assets/crossed-eye.png'
 import Arrow from '../components/arrow'
 
-import  authService  from '../services/uthService';
-
+import authService from '../services/uthService'
+import { AuthContext } from '../context/AuthContext'
+import { useContext } from 'react'
 
 
 function Login() {
 
+
+  const {login} = useContext(AuthContext)
   const navigate = useNavigate()
 
 
@@ -55,6 +58,7 @@ function Login() {
         if (response && response.data) {
             setLoading(false);
             setError('');
+            login(response.data)
             navigate('/');
         }
     } catch (error) {
