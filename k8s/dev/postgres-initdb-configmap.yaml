@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: postgres-initdb-scripts
+  name: postgres-initdb-configmap
 data:
   init-db.sh: |
     #!/bin/bash
@@ -9,6 +9,7 @@ data:
 
 
     ENV=${ENV:-dev}
+    
 
     psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
       DO

@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: reporting-service-config
 data:
-  DB_USER:                      postgres
+  DB_USER:                      admin
   DB_HOST:                      postgres
   DB_NAME_REPORTING_SERVICE:    reporting-service-dev
   NODE_ENV:                     dev

@@ -3,8 +3,7 @@ kind: ConfigMap
 metadata:
   name: user-service-config
 data:
-  # from .env.dev
-  DB_USER:                   postgres
+  DB_USER:                   admin
   DB_HOST:                   postgres
   DB_NAME_USER_SERVICE:      user-service-dev
   NODE_ENV:                  dev

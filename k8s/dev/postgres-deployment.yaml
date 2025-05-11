@@ -15,8 +15,6 @@ spec:
       containers:
       - name: postgres
         image: postgres:17
-        ports:
-        - containerPort: 5432
         env:
         - name: POSTGRES_USER
           valueFrom:
@@ -28,16 +26,35 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: POSTGRES_ADMIN_PASSWORD
+        - name: POSTGRES_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_ADMIN_USER
+        - name: POSTGRES_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_ADMIN_PASSWORD
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_ADMIN_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_ADMIN_PASSWORD
         volumeMounts:
-        - name: data
-          mountPath: /var/lib/postgresql/data
         - name: initdb-scripts
           mountPath: /docker-entrypoint-initdb.d
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
       volumes:
-      - name: data
+      - name: postgres-storage
         persistentVolumeClaim:
           claimName: postgres-pvc
       - name: initdb-scripts
         configMap:
-          name: postgres-initdb-scripts
-        
+          name: postgres-initdb-configmap
