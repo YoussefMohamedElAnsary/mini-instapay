@@ -82,7 +82,7 @@ export default function PinInput({ onChange, value = '', maxLength = 4, classNam
   return (
 
     <div className={`flex flex-col gap-2 text-sm  md:text-lg  lg:text-xl ${className}`}>
-      <label className="block text-lg font-semibold text-gray-800 mb-2">
+      <label className="font-semibold">
         {label} 
       </label>
       <div className='flex gap-4'>
@@ -97,7 +97,7 @@ export default function PinInput({ onChange, value = '', maxLength = 4, classNam
               onChange={(e) => handleChange(index, e)}
               onKeyDown={(e) => handleKeyDown(index, e)}
               onPaste={index === 0 ? handlePaste : undefined}
-              className="w-full h-full text-center  font-bold bg-[#F6F6F6] rounded-lg border-2 border-gray-200 focus:outline-none shadow-sm"
+              className="w-full h-full text-center  font-bold bg-[#F6F6F6] rounded-lg border-2 border-gray-200 focus:outline-none shadow-sm text-gray-700"
               autoComplete="one-time-code"
             />
           </div>
