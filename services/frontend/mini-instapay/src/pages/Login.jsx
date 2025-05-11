@@ -8,14 +8,14 @@ import closedeye from '..//assets/crossed-eye.png'
 import Arrow from '../components/arrow'
 
 import authService from '../services/uthService'
-import { AuthContext } from '../context/AuthContext'
+import { UserContext } from '../context/UserContext'
 import { useContext } from 'react'
 
 
 function Login() {
 
 
-  const {login} = useContext(AuthContext)
+  const {login} = useContext(UserContext)
   const navigate = useNavigate()
 
 

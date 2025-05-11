@@ -3,14 +3,14 @@ import Topusername from "../components/Topusername"
 import Searchfield from "../components/Searchfield"
 import Recenttransactions from "../components/Recenttransactions"
 import { useEffect, useState } from "react"
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 import { useContext } from 'react';
 
 
 function Transactions() {
 
   
-  const {user} = useContext(AuthContext)
+  const {user} = useContext(UserContext)
   
   const [transactionData , settransactionData] = useState(
     [

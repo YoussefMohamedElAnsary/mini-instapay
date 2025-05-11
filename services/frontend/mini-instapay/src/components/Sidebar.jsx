@@ -10,14 +10,14 @@ import { faRightFromBracket, faBars } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 import { useContext } from 'react';
 
 
 
 function Sidebar() {
 
-  const {logout} = useContext(AuthContext)
+  const {logout} = useContext(UserContext)
 
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);

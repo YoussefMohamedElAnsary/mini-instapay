@@ -1,9 +1,9 @@
 import { useContext } from "react"
-import { AuthContext } from "../context/AuthContext"
+import { UserContext } from "../context/UserContext"
 import { Navigate, Outlet } from 'react-router-dom';
 
 function PrivateRoute() {
-    const { token } = useContext(AuthContext)
+    const { token } = useContext(UserContext)
     
     if (token) {
         return <Outlet />

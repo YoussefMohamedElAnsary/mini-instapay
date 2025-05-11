@@ -5,7 +5,7 @@ import Button from '../components/Button'
 import { useState } from "react"
 import MonthlyReportCard from "../components/ReoprtCard"
 
-import { AuthContext } from "../context/AuthContext";
+import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
 
 
@@ -14,7 +14,7 @@ function Report() {
   const [startsearchdate,setStartsearchdate] = useState("")
   const [endsearchdate,setEndsearchdate] = useState("")
 
-  const {user} = useContext(AuthContext)
+  const {user} = useContext(UserContext)
 
   const searchbydate = ()=>{
 

@@ -4,13 +4,13 @@ import Passwordinput from '../components/PasswordInput'
 import Phoneinput from '../components/Phoneinput'
 import Inputfield from '../components/Inputfield'
 
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 import { useContext } from 'react';
 
 
 function ProfileTab({ setActiveTab}) {
 
-  const {user} = useContext(AuthContext)
+  const {user} = useContext(UserContext)
 
 
 

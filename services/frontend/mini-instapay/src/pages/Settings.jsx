@@ -5,13 +5,13 @@ import SettingstabSwitcher from "../components/SettingstabSwitcher"
 import ProfileTab from "../components/ProfileTab"
 import SecurityTab from "../components/SecurityTab"
 
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 import { useContext } from "react"
 
 function Settings() {
   const [activeTab, setActiveTab] = useState("Profile");
 
-  const {user} = useContext(AuthContext)
+  const {user} = useContext(UserContext)
 
   useEffect(() => {
     console.log(activeTab)

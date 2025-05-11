@@ -9,19 +9,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 import { useContext } from "react";
 import { useEffect } from "react";
 
 function Home() {
 
-  const {user} = useContext(AuthContext)
-
-  const navigate = useNavigate();
-
-  useEffect(()=>{
-    console.log(user)
-  },[user])
 
 
     
@@ -61,7 +54,7 @@ function Home() {
                 updatedAt: "2023-11-02T14:30:00.000Z"
               },
               {
-                id: "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed",
+                id: "1b9d6bcd-bbfd-b2d-9b5d-ab8fbbd4bed",
                 senderUserId: "1b9d6bce-bbfd-4b2d-9b5d-ab8dfbbd4bed",
                 receiverUserId: "1b9d6bcf-bbfd-4b2d-9b5d-ab8dfbbd4bed",
                 amount: 200.0000,
@@ -96,9 +89,21 @@ function Home() {
         ]
     )
 
-
     const [step , setStep] = useState(1)
     const [issendModalOpen , setissendModalOpen] = useState(false)
+    
+
+    const {user} = useContext(UserContext)
+
+    const navigate = useNavigate();
+  
+    useEffect(()=>{
+      console.log( "user data",  user)
+    },[user])
+  
+
+
+
 
 
     const openSendMoneyModal = () => {

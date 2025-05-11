@@ -70,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     balance: {
       type: DataTypes.DECIMAL(10, 2),
-      defaultValue: 0.00
+      defaultValue: Math.floor(Math.random() * (10000 - 100 + 1)) + 100
     }
   }, {
     sequelize,
