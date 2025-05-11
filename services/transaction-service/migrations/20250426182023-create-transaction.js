@@ -2,45 +2,46 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    const { DataTypes } = Sequelize;
     await queryInterface.createTable('Transactions', {
       id: {
-        allowNull: false,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4
+        allowNull: false
       },
       senderUserId: {
-        type: Sequelize.UUID,
+        type: DataTypes.UUID,
         allowNull: false
       },
       receiverUserId: {
-        type: Sequelize.UUID,
+        type: DataTypes.UUID,
         allowNull: false
       },
       amount: {
-        type: Sequelize.DECIMAL(19, 4),
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false
       },
       type: {
-        type: Sequelize.ENUM('SENT', 'COLLECTED'),
+        type: DataTypes.ENUM('SENT', 'COLLECTED'),
         allowNull: false
       },
       status: {
-        type: Sequelize.ENUM('PENDING', 'COMPLETED', 'FAILED'),
+        type: DataTypes.ENUM('PENDING', 'COMPLETED', 'FAILED'),
         allowNull: false,
         defaultValue: 'PENDING'
       },
       description: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: true
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       }
     });
   },

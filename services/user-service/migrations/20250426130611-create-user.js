@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const { DataTypes } = Sequelize; // Import DataTypes from Sequelize
+    const { DataTypes } = Sequelize; 
     await queryInterface.createTable('users', {
       id: {
         type: DataTypes.UUID,

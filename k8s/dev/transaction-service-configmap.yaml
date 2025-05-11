@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: transaction-service-config
 data:
-  DB_USER:                       postgres
+  DB_USER:                       admin
   DB_HOST:                       postgres
   DB_NAME_TRANSACTION_SERVICE:   transaction-service-dev
   NODE_ENV:                      dev

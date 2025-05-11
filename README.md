@@ -51,3 +51,8 @@ docker-compose up -d --build
   ENV=prod docker-compose run --rm reporting-service-migrations
   ```
 
+## To run Kubernetes dev env:
+kubectl apply -f k8s/dev/
+
+## To delete Kubernetes dev env:
+kubectl delete -f k8s/dev/
