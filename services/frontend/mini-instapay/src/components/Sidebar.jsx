@@ -99,9 +99,8 @@ function Sidebar() {
         <div className="mt-auto">
           <Button
             onClick={handlelogout}
-            className="flex gap-2 justify-center items-center  text-white"
+            className="flex gap-2 justify-center items-center bg-secondary  text-white"
             type={"logout"}
-            color={"[#5E99CA]"}
           >
             <FontAwesomeIcon icon={faRightFromBracket} />
               Log Out

@@ -139,29 +139,25 @@ function Home() {
                   onClick={openSendMoneyModal}
                   text={"send"}
                   icon={faUser}
-                  color={"[#99C445]"}
-                  textcolor={"black"}
+                  className={"bg-primary  text-black"}
                   />
               <Homebutton
                   onClick={()=>navigate("/transactions")}
                   text={"Receive"}
                   icon={faUser}
-                  color={"[#5E99CA]"}
-                  textcolor={"black"}
+                  className={"bg-secondary  text-black"}
                   />
               <Homebutton
                   onClick={()=>navigate("/transactions")}
                   text={"Payments"}
                   icon={faUser}
-                  color={"[#9BC3E3]"}
-                  textcolor={"black"}                        
+                  className={"bg-blue-100  text-black"}
                   />
               <Homebutton
                   onClick={()=>navigate("/report")}
                   text={"Reporting"}
                   icon={faUser}
-                  color={"[#95AD67]"}
-                  textcolor={"black"}                        
+                  className={"bg-darkgreen text-black"}
                   />
           </div>
 

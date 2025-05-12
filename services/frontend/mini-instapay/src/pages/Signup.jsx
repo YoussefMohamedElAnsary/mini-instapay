@@ -173,7 +173,8 @@ function Signup() {
                 maxLength={4} 
               />
 
-              <Button type={'submit'}  className=' hover:bg-[#9ac445e9] text-[white]'  color={"[#99C445]"} > Sign Up  </Button>
+              
+              <Button type={'submit'}  className=' hover:bg-[#9ac445e9] text-[white] bg-primary'  > Sign Up  </Button>
 
               <div className="self-center flex items-center justify-center mt-2 min-h-[24px]">
                 {loading ? (
