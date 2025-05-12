@@ -11,17 +11,43 @@ import { useContext } from "react";
 
 function Report() {
 
-  const [startsearchdate,setStartsearchdate] = useState("")
-  const [endsearchdate,setEndsearchdate] = useState("")
+  const [startsearchdate, setStartsearchdate] = useState("")
+  const [endsearchdate, setEndsearchdate] = useState("")
+  const [filteredReports, setFilteredReports] = useState([])
+  const [isFiltered, setIsFiltered] = useState(false)
 
   const {user} = useContext(UserContext)
 
-  const searchbydate = ()=>{
+  const searchbydate = () => {
+    if (!startsearchdate || !endsearchdate) {
+      alert("Please select both start and end dates")
+      return
+    }
 
+    const startDate = new Date(startsearchdate)
+    const endDate = new Date(endsearchdate)
 
-    console.log(startsearchdate)
-    console.log(endsearchdate)
+    if (startDate > endDate) {
+      alert("Start date cannot be after end date")
+      return
+    }
 
+    const filtered = dummyReports.filter(report => {
+      const reportStartDate = new Date(report.startDate.split('-').reverse().join('-'))
+      const reportEndDate = new Date(report.endDate.split('-').reverse().join('-'))
+      
+      return reportStartDate >= startDate && reportEndDate <= endDate
+    })
+
+    setFilteredReports(filtered)
+    setIsFiltered(true)
+  }
+
+  const resetFilter = () => {
+    setFilteredReports([])
+    setIsFiltered(false)
+    setStartsearchdate("")
+    setEndsearchdate("")
   }
 
   const dummyReports = [
@@ -113,6 +139,11 @@ function Report() {
             <Button onClick={searchbydate}  className=' text-[#F9F7FE]' color={"[#5E99CA]"}>
                 Apply Filtration   
             </Button>
+            {isFiltered && (
+              <Button onClick={resetFilter} className='text-[#F9F7FE]' color={"[#99C445]"}>
+                Reset Filter
+              </Button>
+            )}
           </div>
         </div>
 
@@ -121,7 +152,7 @@ function Report() {
         <div className=" reportcards  grid grid-cols-6 gap-12">
 
 
-          {dummyReports.map((report) => (
+          {(isFiltered ? filteredReports : dummyReports).map((report) => (
             <>
             <div className="col-span-2 ">
                 <MonthlyReportCard

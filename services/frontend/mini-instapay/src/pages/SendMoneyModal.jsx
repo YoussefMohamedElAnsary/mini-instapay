@@ -6,17 +6,19 @@ import Button from "../components/Button";
 import doneimg from "../assets/9933421_4300520 1.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 
 function SendMoneyModal({ isOpen, step , setStep , closeModal }) {
 
   const [amount , setAmount] = useState("")
-  const [cardnumber , setCardNumber] = useState("")
+  const [phoneNumber , setPhoneNumber] = useState("")
   const [comment , setComment] = useState("")
   const [pinCode, setPinCode] = useState("");
   const [closeconfirm , setCloseconfirm] = useState(false)
 
+  const { user } = useContext(UserContext);
 
 
   const handleNext =()=>{
@@ -25,7 +27,7 @@ function SendMoneyModal({ isOpen, step , setStep , closeModal }) {
 
       setStep(2);
       console.log(amount)
-      console.log(cardnumber)
+      console.log(phoneNumber)
       console.log(comment)
 
     
@@ -49,7 +51,7 @@ function SendMoneyModal({ isOpen, step , setStep , closeModal }) {
 
   const confirmClose = () => {
     setAmount("");
-    setCardNumber("");
+    setPhoneNumber("");
     setComment("");
     setPinCode("");
     setStep(1);   
@@ -90,7 +92,7 @@ if (!isOpen) return null;
 
               <Inputfield type={"number"} label={"Amount"} placeholder={"EG. 250"}  className="text-xl"  onChange={(e)=>setAmount(e.target.value)}/>
 
-              <Inputfield type={"text"} label={"Card Number"} placeholder={"547965472589314"}  className="text-xl" onChange={(e)=> setCardNumber(e.target.value)}/>
+              <Inputfield type={"text"} label={"Phone Number"} placeholder={"01012345678"}  className="text-xl" onChange={(e)=> setPhoneNumber(e.target.value)}/>
 
               <Inputfield type={"text"} label={"Comment "} placeholder={"Comment (optional)"}  className="text-xl" onChange={(e)=> setComment(e.target.value)}/>
 

@@ -57,43 +57,38 @@ function Sidebar() {
         </div>
 
         <ul className="flex flex-col gap-3 text-lg xl:text-2xl font-medium">
-
-            <Link to="/home">
-                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#9BC3E3]
+            <Link to="/home" className="block">
+                <li className={`rounded-2xl p-2 flex items-center gap-2 hover:bg-[#9BC3E3]
                         ${location.pathname === '/home' ? 'bg-[#9BC3E3] font-bold ' : ''}
                     `}>
                     <img className="w-6 xl:w-10" src={homeicon} alt="transaction" />
                     Home
                 </li>
             </Link>
-            <Link to="/transactions">
-                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#9BC3E3]
+            <Link to="/transactions" className="block">
+                <li className={`rounded-2xl p-2 flex items-center gap-2 hover:bg-[#9BC3E3]
                         ${location.pathname === '/transactions' ? 'bg-[#9BC3E3] font-bold ' : ''}
                     `}>
                     <img className="w-6 xl:w-fit" src={transactionsicon} alt="transaction" />
-                    
                     Transactions
                 </li>
             </Link>
-            <Link to="/settings">
-                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#9BC3E3]
+            <Link to="/settings" className="block">
+                <li className={`rounded-2xl p-2 flex items-center gap-2 hover:bg-[#9BC3E3]
                         ${location.pathname === '/settings' ? 'bg-[#9BC3E3] font-bold ' : ''}
                     `}>
                     <img className="w-6 xl:w-fit" src={settingicon} alt="settings" />
-                    
                     Profile
                 </li>
             </Link>
-            <Link to="/report">
-                <li className={`rounded-2xl p-2 flex items-center gap-2 cursor-pointer hover:bg-[#9BC3E3]
+            <Link to="/report" className="block">
+                <li className={`rounded-2xl p-2 flex items-center gap-2 hover:bg-[#9BC3E3]
                         ${location.pathname === '/report' ? 'bg-[#9BC3E3] font-bold ' : ''}
                     `}>
                     <img className="w-6 xl:w-fit" src={Reportsicon} alt="report" />
-                    
                     Quick Report
                 </li>
             </Link>
-
         </ul>
 
         <div className="mt-auto">
