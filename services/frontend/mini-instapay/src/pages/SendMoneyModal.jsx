@@ -98,10 +98,7 @@ if (!isOpen) return null;
 
               <Button  
               onClick={handleNext } 
-              className=' mt-2 hover:bg-[#9ac445e9]' 
-              color={"[#99C445]"} 
-              textsize={"l"} 
-              textcolor={"white"}
+              className=' mt-2 hover:bg-[#9ac445e9] text-white bg-primary' 
               >
 
                  Next  
@@ -116,7 +113,7 @@ if (!isOpen) return null;
               
               <PinInput onChange={setPinCode} value={pinCode} maxLength={4} className='text-xl' />
 
-              <Button  onClick={handleNext} className=' mt-2 hover:bg-[#9ac445e9]' color={"[#99C445]"} textsize={"l"} textcolor={"white"}>
+              <Button  onClick={handleNext} className=' mt-2 hover:bg-[#9ac445e9] text-white bg-primary'  >
                 Confirm Process  
               </Button>
             </div>
@@ -131,11 +128,7 @@ if (!isOpen) return null;
 
               <Button  
                 onClick={handleNext}
-                className=' mt-2 hover:bg-[#9ac445e9]' 
-                color={"[#99C445]"} 
-                textsize={"l"} 
-                textcolor={"white"}>
-                  
+                className=' mt-2 hover:bg-[#9ac445e9] text-white bg-primary'>
                   Done 
               </Button>
 

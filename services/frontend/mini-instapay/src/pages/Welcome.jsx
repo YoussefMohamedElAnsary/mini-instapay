@@ -19,8 +19,8 @@ function Welcome() {
             <p className='font-medium'> Welcome. Let's start by creating your account or sign in if you already have one </p>
 
              <div className=' w-full flex gap-5'>
-                <Button onClick={()=> navigate("/register")} className='welcomebtn text-white bg-l ' color={"[#99C445]"} textsize={"l"}  > Sign Up </Button>
-                <Button onClick={() => navigate("/login")} className='welcomebtn text-secondary bg-blue-50'color={"[#D9E1FF]"} textsize={"l"} >Login</Button>
+                <Button onClick={()=> navigate("/register")} className='welcomebtn text-white bg-l  bg-primary'   > Sign Up </Button>
+                <Button onClick={() => navigate("/login")} className='welcomebtn text-secondary bg-blue-50'>Login</Button>
 
              </div>
 

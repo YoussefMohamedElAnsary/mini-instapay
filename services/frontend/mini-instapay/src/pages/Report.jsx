@@ -135,12 +135,12 @@ function Report() {
             <Dateinput label={"End Date"} value={endsearchdate}  onChange={(e)=>setEndsearchdate(e.target.value)}/>
           </div>
 
-          <div className="col-span-2 h-fit flex flex-col self-end  ">
-            <Button onClick={searchbydate}  className=' text-[#F9F7FE]' color={"[#5E99CA]"}>
+          <div className="col-span-2 h-fit flex gap-2 flex-col self-end  ">
+            <Button onClick={searchbydate}  className=' text-[#F9F7FE] w-fit bg-secondary' >
                 Apply Filtration   
             </Button>
             {isFiltered && (
-              <Button onClick={resetFilter} className='text-[#F9F7FE]' color={"[#99C445]"}>
+              <Button onClick={resetFilter} className='text-[#F9F7FE] bg-primary'>
                 Reset Filter
               </Button>
             )}
