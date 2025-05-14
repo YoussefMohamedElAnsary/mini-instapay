@@ -41,7 +41,19 @@ const confirmTransaction = async (transactionId, token) => {
     return response;
 }
 
-export default { sendMoney, cancelTransaction, confirmTransaction };
+const getUserTransactions = async (userid , token) => {
+
+    const response = await Transactionapi.get( `/transactions/user/${userid}` , 
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    )
+    return response;
+}
+
+export default { sendMoney, cancelTransaction, confirmTransaction ,getUserTransactions};
 
 
 

@@ -24,6 +24,12 @@ app.post("/api/transactions", async (req, res) => {
   const { senderUserId, receiverPhoneNumber, amount, description } = req.body;
 
   try {
+    // Ensure amount is a valid number
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount)) {
+      return res.status(400).json({ message: "Invalid amount format" });
+    }
+
     // Log the environment variables and request data
     console.log("Environment variables:", {
       USER_SERVICE_URL: process.env.USER_SERVICE_URL,
@@ -32,7 +38,7 @@ app.post("/api/transactions", async (req, res) => {
     console.log("Transaction request data:", {
       senderUserId,
       receiverPhoneNumber,
-      amount,
+      amount: parsedAmount,
       description
     });
     
@@ -55,7 +61,7 @@ app.post("/api/transactions", async (req, res) => {
     const transaction = await Transaction.create({
       senderUserId,
       receiverUserId: receiverResponse.data.id,
-      amount,
+      amount: parsedAmount,
       type: "SENT",
       status: "PENDING",
       description,
@@ -99,12 +105,20 @@ app.post("/api/transactions/:transactionId/confirm", async (req, res) => {
       return res.status(400).json({ message: "Only pending transactions can be confirmed" });
     }
 
+    // Ensure amount is a valid number
+    const amount = parseFloat(transaction.amount);
+    if (isNaN(amount)) {
+      return res.status(400).json({ message: "Invalid transaction amount" });
+    }
+
+    console.log(`Confirming transaction ${transactionId} with amount ${amount}`);
+    
     // Update balances via User Service
     try {
       await axios.post(`${USER_SERVICE_URL}/api/user/update-balance`, {
         senderUserId: transaction.senderUserId,
         receiverUserId: transaction.receiverUserId,
-        amount: transaction.amount,
+        amount: amount
       });
       
       // Update transaction status to COMPLETED
@@ -138,6 +152,9 @@ app.get("/api/transactions", async (req, res) => {
   }
 });
 
+// Route: Get transactions for a specific user
+// params: userId 
+// returns: all transactions for the user
 app.get("/api/transactions/user/:userId", async (req, res) => {
   const { userId } = req.params;
 
@@ -158,10 +175,12 @@ app.get("/api/transactions/user/:userId", async (req, res) => {
   } catch (error) {
     console.error("Fetch User Transactions Error:", error.message);
     res.status(500).json({ message: "Failed to fetch user transactions" });
-  }
-});
+    }
+  });
 
-// Route: Cancel a transaction
+// Route: Cancel a transactionx
+// params: transactionId
+// returns: message
 app.post("/api/transactions/:transactionId/cancel", async (req, res) => {
   const { transactionId } = req.params;
 

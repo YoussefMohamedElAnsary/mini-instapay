@@ -20,6 +20,14 @@ app.post("/api/user/update-balance", async (req, res) => {
   const { senderUserId, receiverUserId, amount } = req.body;
 
   try {
+    // Parse amount to ensure it's a valid number
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount)) {
+      return res.status(400).json({ message: "Invalid amount format" });
+    }
+
+    console.log(`Updating balances: ${senderUserId} -> ${receiverUserId}, amount: ${parsedAmount}`);
+
     // Fetch sender and receiver
     const sender = await User.findByPk(senderUserId);
     const receiver = await User.findByPk(receiverUserId);
@@ -29,17 +37,18 @@ app.post("/api/user/update-balance", async (req, res) => {
     }
 
     // Check if sender has sufficient balance
-    if (sender.balance < amount) {
+    if (sender.balance < parsedAmount) {
       return res.status(400).json({ message: "Insufficient balance" });
     }
 
     // Update balances
-    sender.balance -= amount;
-    receiver.balance += amount;
+    sender.balance -= parsedAmount;
+    receiver.balance += parsedAmount;
 
     await sender.save();
     await receiver.save();
 
+    console.log(`Balances updated successfully. Sender: ${sender.balance}, Receiver: ${receiver.balance}`);
     res.status(200).json({ message: "Balances updated successfully" });
   } catch (error) {
     console.error("Update Balance Error:", error.message);
