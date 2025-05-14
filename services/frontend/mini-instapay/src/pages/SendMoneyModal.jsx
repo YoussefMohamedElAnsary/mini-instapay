@@ -170,10 +170,9 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
     <>
 
       {/* Overlay */}
-      <div className="fixed inset-0 bg-black opacity-25 z-40"></div>
+      <div className="fixed inset-0 bg-black opacity-25 z-[1000]"></div>
 
-
-      <div className="absolute top-36 flex  justify-center z-50 w-[60%]  h-fit p-6 m-auto rounded-xl shadow-2xl bg-white">
+      <div className="absolute top-36 flex  justify-center z-[1001] w-[60%]  h-fit p-6 m-auto rounded-xl shadow-2xl bg-white">
 
         <button onClick={handleCancel}  className= "cursor-pointer hover:bg-red-500 absolute text-4xl right-6 border-2 w-10 h-10 rounded-4xl flex items-center justify-center "> 
           <FontAwesomeIcon icon={faXmark} /> 
@@ -236,10 +235,9 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
         {/* Confirmation Dialog */}
         
         {closeconfirm && (
-
           <>
-            <div className="fixed inset-0 bg-black opacity-25 z-40"></div>
-            <div className="absolute  m-auto content-center self-center inset-0 flex justify-center items-center z-50">
+            <div className="fixed inset-0 bg-black opacity-25 z-[1050]"></div>
+            <div className="absolute m-auto content-center self-center inset-0 flex justify-center items-center z-[1051]">
               <div className="relative p-6 rounded-xl shadow-2xl bg-white">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">Confirm Cancellation</h2>
                 <p className="text-gray-600 mb-6">Are you sure you want to cancel this transaction? All entered data will be lost.</p>
@@ -261,7 +259,6 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
               </div>
             </div>
           </>
-
         )}
 
 

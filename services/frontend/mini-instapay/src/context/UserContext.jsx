@@ -4,6 +4,7 @@ import axios from 'axios';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+    
     const [user, setUser] = useState(null)
     const [token, setToken] = useState(null)
     const [loading, setLoading] = useState(true)
