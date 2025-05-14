@@ -15,6 +15,7 @@ app.get("/api/profile", require("./middlewares/auth"), (req, res) => {
   res.json({ user: req.user.toJSON() });
 });
 
+
 app.post("/api/user/update-balance", async (req, res) => {
   const { senderUserId, receiverUserId, amount } = req.body;
 
@@ -47,6 +48,7 @@ app.post("/api/user/update-balance", async (req, res) => {
       .json({ message: "Failed to update balances", error: error.message });
   }
 });
+
 
 app.get("/api/user/:phoneNumber", async (req, res) => {
   const { phoneNumber } = req.params;

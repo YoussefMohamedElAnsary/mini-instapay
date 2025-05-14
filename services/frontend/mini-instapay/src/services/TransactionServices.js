@@ -1,25 +1,47 @@
-
 import Transactionapi from './Transactionapi';
 
-
-const getTransactions = async ( phoneNumber , amount , pin , comment, token) => {
-
-    const response = await Transactionapi.post('/transaction', {
-       body: {
-        phoneNumber,
-        amount,
-        pin,
-        comment,
-       },
-        headers: {
-            Authorization: `Bearer ${token}`,
+const sendMoney = async (senderUserId, receiverPhoneNumber, amount, description, token) => {
+    const response = await Transactionapi.post('/transactions', 
+        {
+            senderUserId,
+            receiverPhoneNumber, 
+            amount: parseFloat(amount),
+            description
         },
-    });
-    return response.data;
-}       
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+    return response;
+}      
 
+const cancelTransaction = async (transactionId, token) => {
+    const response = await Transactionapi.post(`/transactions/${transactionId}/cancel`, 
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+    return response;
+}
 
-export default { getTransactions };
+const confirmTransaction = async (transactionId, token) => {
+    const response = await Transactionapi.post(`/transactions/${transactionId}/confirm`, 
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+    return response;
+}
+
+export default { sendMoney, cancelTransaction, confirmTransaction };
 
 
 

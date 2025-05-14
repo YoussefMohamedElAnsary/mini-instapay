@@ -37,10 +37,16 @@ function Login() {
       return;
     }
   
-    if (!/^\d{11,11}$/.test(phoneNumber)) {
+    if (!/^\d{10,10}$/.test(phoneNumber)) {
       setError('Please enter a valid phone number');
       return;
     }
+
+    if (phoneNumber.startsWith('0')) {
+      setError('Phone number should not start with 0');
+      return;
+    }
+    
 
     if (!password.trim()) {
       setError('Password is required');
@@ -52,7 +58,7 @@ function Login() {
 
     try {
   
-        const response = await authService.login(phoneNumber, password);
+        const response = await authService.login('0' + phoneNumber, password);
         console.log('Login response:', response);
         
         if (response && response.data) {
@@ -97,7 +103,7 @@ function Login() {
                 type={"tel"}
                 value={phoneNumber}
                 label={"Phone Number"}
-                placeholder={"01157788834"}
+                placeholder={"1151155566"}
                 onChange={(e)=> setPhoneNumber(e.target.value)}
               />
 

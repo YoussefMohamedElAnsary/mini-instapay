@@ -73,6 +73,9 @@ exports.login = async (req, res) => {
     return res.status(500).json({ error: "Login failed" });
   }
 };
+
+
+// body: { pin: string }
 exports.verifyPin = async (req, res) => {
   try {
     const { pin } = req.body;

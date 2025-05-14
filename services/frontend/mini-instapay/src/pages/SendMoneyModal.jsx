@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Inputfield from "../components/Inputfield";
 import PinInput from "../components/Pinnumber";
@@ -8,34 +7,129 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import TransactionServices from "../services/TransactionServices";
+import authService from "../services/uthService";
 
 
-function SendMoneyModal({ isOpen, step , setStep , closeModal }) {
+function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
 
-  const [amount , setAmount] = useState("")
-  const [phoneNumber , setPhoneNumber] = useState("")
-  const [comment , setComment] = useState("")
+  const [amount, setAmount] = useState("")
+  const [receiverPhoneNumber, setReceiverPhoneNumber] = useState("")
+  const [description, setDescription] = useState("")
   const [pinCode, setPinCode] = useState("");
-  const [closeconfirm , setCloseconfirm] = useState(false)
+  const [closeconfirm, setCloseconfirm] = useState(false)
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [transactionId, setTransactionId] = useState(null)
 
-  const { user } = useContext(UserContext);
+  const { user, token, refreshUser } = useContext(UserContext);
 
+  // Function to cancel a pending transaction
+  const cancelTransaction = async () => {
+    if (transactionId) {
+      try {
+        await TransactionServices.cancelTransaction(transactionId, token);
+        console.log("Transaction cancelled successfully");
+      } catch (error) {
+        console.error("Error cancelling transaction:", error);
+      }
+    }
+  };
 
-  const handleNext =()=>{
+  const handleNext = async () => {
 
     if (step === 1) {
 
-      setStep(2);
-      console.log(amount)
-      console.log(phoneNumber)
-      console.log(comment)
+      if (amount === "" || receiverPhoneNumber === "") {
+        setError("Please fill all the fields")
+        return
+      }
 
-    
-    } else if (step === 2) {
-      setStep(3);
-      console.log(pinCode)
-    
-    } else if (step === 3) {
+      if (amount < 0) {
+        setError("Amount cannot be negative")
+        return
+      }
+
+      if (receiverPhoneNumber.length !== 11) {
+        setError("Phone number not valid")
+        return
+      }
+
+      setLoading(true)
+      try {
+
+        const response = await TransactionServices.sendMoney(user.id, receiverPhoneNumber, amount, description ? description : "", token)
+
+        if (response.status >= 200 && response.status < 300) {
+          // Store the transaction ID for possible cancellation
+          setTransactionId(response.data.id);
+          setLoading(false)
+          setStep(2);
+          return
+        }
+        else {
+          setError(response.data.message)
+          setLoading(false)
+          return
+        }
+      } catch (error) {
+        console.log(error)
+        setError(error.response.data.message)
+        setLoading(false)
+        return
+      }
+
+
+    }
+
+    else if (step === 2) {
+      if (pinCode.length !== 4) {
+        setError("Pin code must be 4 digits")
+        return
+      }
+
+      setLoading(true)
+      try {
+        console.log(token)
+        const pinResponse = await authService.verifyPin(pinCode, token)
+        
+        if (pinResponse.status >= 200 && pinResponse.status < 300) {
+          // PIN verification successful, now confirm the transaction
+          try {
+            const confirmResponse = await TransactionServices.confirmTransaction(transactionId, token);
+            console.log("Transaction confirmed:", confirmResponse.data);
+            
+            // Only proceed if confirmation is successful
+            if (confirmResponse.status >= 200 && confirmResponse.status < 300) {
+              setLoading(false);
+              setStep(3);
+              await refreshUser(token);
+              return;
+            } else {
+              setError(confirmResponse.data.message || "Failed to confirm transaction");
+              setLoading(false);
+              return;
+            }
+          } catch (confirmError) {
+            console.error("Transaction confirmation error:", confirmError);
+            setError(confirmError.response?.data?.message || "Failed to confirm transaction");
+            setLoading(false);
+            return;
+          }
+        }
+        else {
+          setError(pinResponse.data.message)
+          setLoading(false)
+          return
+        }
+      } catch (error) {
+        setError(error.response?.data?.message || "PIN verification failed")
+        setLoading(false)
+        return
+      }
+    }
+    else if (step === 3) {
+      await refreshUser(token);
       closeModal();
     }
 
@@ -49,27 +143,28 @@ function SendMoneyModal({ isOpen, step , setStep , closeModal }) {
     }
   };
 
-  const confirmClose = () => {
+  const confirmClose = async () => {
+    // Cancel the transaction if we're in step 2
+    if (step === 2 && transactionId) {
+      await cancelTransaction();
+    }
+    
+    // Reset all states
     setAmount("");
-    setPhoneNumber("");
-    setComment("");
+    setReceiverPhoneNumber("");
+    setDescription("");
     setPinCode("");
-    setStep(1);   
+    setTransactionId(null);
+    setStep(1);
     closeModal();
     setCloseconfirm(false);
-
   };
 
   const cancelClose = () => {
     setCloseconfirm(false);
   };
 
-
-
-
-
-
-if (!isOpen) return null;
+  if (!isOpen) return null;
 
   return (
     <>
@@ -92,17 +187,17 @@ if (!isOpen) return null;
 
               <Inputfield type={"number"} label={"Amount"} placeholder={"EG. 250"}  className="text-xl"  onChange={(e)=>setAmount(e.target.value)}/>
 
-              <Inputfield type={"text"} label={"Phone Number"} placeholder={"01012345678"}  className="text-xl" onChange={(e)=> setPhoneNumber(e.target.value)}/>
+              <Inputfield type={"text"} label={"Phone Number"} placeholder={"01012345678"}  className="text-xl" onChange={(e)=> setReceiverPhoneNumber(e.target.value)}/>
 
-              <Inputfield type={"text"} label={"Comment "} placeholder={"Comment (optional)"}  className="text-xl" onChange={(e)=> setComment(e.target.value)}/>
+              <Inputfield type={"text"} label={"Description "} placeholder={"Description (optional)"}  className="text-xl" onChange={(e)=> setDescription(e.target.value)}/>
 
               <Button  
               onClick={handleNext } 
               className=' mt-2 hover:bg-[#9ac445e9] text-white bg-primary' 
               >
-
-                 Next  
+                 {loading ? "loading..." : "Next"}  
               </Button>
+              {error && <p className="text-red-500">{error}</p>}
             </div>
           }
 

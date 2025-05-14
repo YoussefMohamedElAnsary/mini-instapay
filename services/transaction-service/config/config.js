@@ -1,6 +1,6 @@
 const path = require('path');
 
-const env = process.env.NODE_ENV || 'development'; 
+const env = process.env.NODE_ENV || 'dev'; 
 const envPath = path.resolve(__dirname, `../../../envs/.env.${env}`);
 require('dotenv').config({ path: envPath });
 
@@ -11,6 +11,8 @@ console.log('Loaded Environment Variables:', {
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_NAME: process.env.DB_NAME_TRANSACTION_SERVICE || process.env.DB_NAME, 
   DB_HOST: process.env.DB_HOST,
+  USER_SERVICE_URL: process.env.USER_SERVICE_URL,
+  REPORTING_SERVICE_URL: process.env.REPORTING_SERVICE_URL
 });
 
 module.exports = {

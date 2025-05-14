@@ -39,10 +39,16 @@ function Signup() {
         return;
       }
     
-      if (!/^\d{11}$/.test(phoneNumber)) {
+      if (!/^\d{10}$/.test(phoneNumber)) {
         setError('Please enter a valid phone number');
         return;
       }
+
+      if (phoneNumber.startsWith('0')) {
+        setError('Phone number should not start with 0');
+        return;
+      }
+      
     
       if (!password.trim()) {
         setError('Password is required');
@@ -78,12 +84,18 @@ function Signup() {
 
       try {
     
-        const response = await authService.register(username, phoneNumber, password, pin, cardNumber);
-        console.log(response);
-        setLoading(false);
-        setError('');
+        const response = await authService.register(username, '0' + phoneNumber, password, pin, cardNumber);
+      
+        if(response){
+          setLoading(false);
+          setError('');
+          navigate('/login');
+        }
+        else{
+          setError('Something went wrong');
+          setLoading(false);
+        }
         
-        navigate('/login');
       } catch (error) {
         console.error('Registration error:', error);
         
@@ -133,7 +145,7 @@ function Signup() {
                 type={"tel"}
                 value={phoneNumber}
                 label={"Phone Number"}
-                placeholder={"01549384592"}
+                placeholder={"1151155566"}
                 onChange={(e)=> setPhoneNumber(e.target.value)}
               />
 

@@ -1,31 +1,46 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Report extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+  const Report = sequelize.define('Report', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false
+    },
+    reportType: {
+      type: DataTypes.ENUM('WEEKLY', 'MONTHLY'),
+      allowNull: false
+    },
+    startDate: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    totalTransactions: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    totalSent: {
+      type: DataTypes.DECIMAL(10, 2),
+      defaultValue: 0
+    },
+    totalReceived: {
+      type: DataTypes.DECIMAL(10, 2),
+      defaultValue: 0
+    },
+    generatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
     }
-  }
-  Report.init({
-    id: DataTypes.UUID,
-    userId: DataTypes.UUID,
-    reportType: DataTypes.ENUM,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
-    totalTransactions: DataTypes.INTEGER,
-    totalSent: DataTypes.DECIMAL,
-    totalRecieved: DataTypes.DECIMAL,
-    generatedAt: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'Report',
   });
+
   return Report;
 };
