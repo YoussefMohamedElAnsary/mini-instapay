@@ -14,25 +14,24 @@ import { TransactionContext } from '../context/TransactionContext';
 
 
 function Home() {
-
-
-    const [step , setStep] = useState(1)
-    const [issendModalOpen , setissendModalOpen] = useState(false)
+    const [step, setStep] = useState(1)
+    const [issendModalOpen, setissendModalOpen] = useState(false)
     
-
-    const {user} = useContext(UserContext)
-    const {transactions} = useContext(TransactionContext)
+    const { user } = useContext(UserContext)
+    const { transactions, loading: transactionsLoading, error: transactionsError, fetchTransactions } = useContext(TransactionContext)
 
     const navigate = useNavigate();
   
-    useEffect(()=>{
-      console.log( "user data",  user)
-    },[user])
+    useEffect(() => {
+      console.log("user data", user)
+    }, [user])
   
-
-
-
-
+    // Refresh transactions when modal is closed (in case a new transaction was made)
+    useEffect(() => {
+      if (!issendModalOpen && user) {
+        fetchTransactions();
+      }
+    }, [issendModalOpen, user]);
 
     const openSendMoneyModal = () => {
         console.log("send")
@@ -40,26 +39,21 @@ function Home() {
         setStep(1); // Start from Step 1
     };
 
-
     const closeModal = () => {
-    setissendModalOpen(false);
-    console.log(step)
-
+        setissendModalOpen(false);
+        console.log(step)
     };
  
-
     if (!user) return <div>Loading...</div>; 
  
     return (
     <>
-
       <div className="flex flex-col w-11/12 gap-8 relative z-0">
           
           <div className="balance flex flex-col items-center">
               <span className="text-l font-medium text-[#8D8D8D]"> Total Balance (EGP) </span>
               <span className="text-2xl lg:text-4xl font-bold text-[#0E0E0E]"> EGP {user.balance} </span>
           </div>
-
 
           <div className="buttonsgroup grid grid-rows-2 grid-cols-2 gap-x-10 lg:gap-x-18 xl:gap-x-28 gap-y-5">
               <Homebutton
@@ -88,9 +82,13 @@ function Home() {
                   />
           </div>
 
-
           <div className="recenttransactionsec">
-              <Recenttransactions data={transactions} displayLimit={4}/>
+              <Recenttransactions 
+                data={transactions || []} 
+                displayLimit={4}
+                loading={transactionsLoading}
+                error={transactionsError}
+              />
           </div>
       </div>
       

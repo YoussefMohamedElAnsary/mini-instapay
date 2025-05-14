@@ -32,24 +32,46 @@ app.post("/api/user/update-balance", async (req, res) => {
     const sender = await User.findByPk(senderUserId);
     const receiver = await User.findByPk(receiverUserId);
 
+    console.log('Before update -', { 
+      sender: sender ? { id: sender.id, balance: sender.balance } : 'not found', 
+      receiver: receiver ? { id: receiver.id, balance: receiver.balance } : 'not found'
+    });
+
     if (!sender || !receiver) {
       return res.status(404).json({ message: "Sender or Receiver not found" });
     }
 
     // Check if sender has sufficient balance
-    if (sender.balance < parsedAmount) {
+    if (parseFloat(sender.balance) < parsedAmount) {
       return res.status(400).json({ message: "Insufficient balance" });
     }
 
-    // Update balances
-    sender.balance -= parsedAmount;
-    receiver.balance += parsedAmount;
+    // Get current balances as numbers (ensure proper numeric handling)
+    const currentSenderBalance = parseFloat(sender.balance);
+    const currentReceiverBalance = parseFloat(receiver.balance);
 
+    // Calculate new balances
+    const newSenderBalance = (currentSenderBalance - parsedAmount).toFixed(2);
+    const newReceiverBalance = (currentReceiverBalance + parsedAmount).toFixed(2);
+
+    // Update balances
+    sender.balance = newSenderBalance;
+    receiver.balance = newReceiverBalance;
+
+    // Save both users
     await sender.save();
     await receiver.save();
 
-    console.log(`Balances updated successfully. Sender: ${sender.balance}, Receiver: ${receiver.balance}`);
-    res.status(200).json({ message: "Balances updated successfully" });
+    console.log('After update -', { 
+      sender: { id: sender.id, balance: sender.balance }, 
+      receiver: { id: receiver.id, balance: receiver.balance }
+    });
+
+    res.status(200).json({ 
+      message: "Balances updated successfully",
+      sender: { id: sender.id, newBalance: sender.balance },
+      receiver: { id: receiver.id, newBalance: receiver.balance }
+    });
   } catch (error) {
     console.error("Update Balance Error:", error.message);
     res
@@ -75,6 +97,23 @@ app.get("/api/user/:phoneNumber", async (req, res) => {
     res
       .status(500)
       .json({ message: "Failed to fetch user", error: error.message });
+  }
+});
+
+app.get("/api/users/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Fetch User By ID Error:", error.message);
+    res.status(500).json({ message: "Failed to fetch user", error: error.message });
   }
 });
 

@@ -115,18 +115,25 @@ app.post("/api/transactions/:transactionId/confirm", async (req, res) => {
     
     // Update balances via User Service
     try {
-      await axios.post(`${USER_SERVICE_URL}/api/user/update-balance`, {
+      const balanceResponse = await axios.post(`${USER_SERVICE_URL}/api/user/update-balance`, {
         senderUserId: transaction.senderUserId,
         receiverUserId: transaction.receiverUserId,
         amount: amount
       });
       
-      // Update transaction status to COMPLETED
+      console.log('Balance update response:', balanceResponse.data);
+      
+      // Update original transaction status to COMPLETED
       transaction.status = "COMPLETED";
       await transaction.save();
       
       console.log(`Transaction ${transactionId} confirmed and balances updated`);
-      res.status(200).json({ message: "Transaction confirmed successfully", transaction });
+      
+      res.status(200).json({ 
+        message: "Transaction confirmed successfully", 
+        transaction,
+        balanceUpdate: balanceResponse.data
+      });
     } catch (error) {
       // If balance update fails, keep transaction as PENDING
       console.error("Balance update failed:", error.message);

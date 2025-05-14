@@ -7,59 +7,57 @@ import { UserContext } from '../context/UserContext';
 import { useContext } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 
-
-
 function Transactions() {
+  const { transactions, loading, error, fetchTransactions } = useContext(TransactionContext);
+  const [searchvalue, setSearchvalue] = useState("");
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
 
-  
+  // Fetch transactions when component mounts
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
 
-const {transactions} = useContext(TransactionContext)
-const [searchvalue , setSearchvalue] = useState("")
-const [filteredTransactions, setFilteredTransactions] = useState(transactions)
+  useEffect(() => {
+    if (!Array.isArray(transactions)) {
+      setFilteredTransactions([]);
+      return;
+    }
 
-
-
-useEffect(() => {
-
-  console.log(searchvalue)
-  if (searchvalue.trim() === "") {
-    setFilteredTransactions(transactions); // Show all if input is empty
-  } else {
-    const filtered = transactions.filter((transaction) => {
-      const search = searchvalue.toLowerCase();
-      return (
-        transaction.description.toLowerCase().includes(search) ||
-        transaction.status.toLowerCase().includes(search) ||
-        transaction.type.toLowerCase().includes(search)
-      );
-    });
-    setFilteredTransactions(filtered);
-  }
-}, [searchvalue, transactions]);
-
-
-
-
+    if (searchvalue.trim() === "") {
+      setFilteredTransactions(transactions); // Show all if input is empty
+    } else {
+      const filtered = transactions.filter((transaction) => {
+        if (!transaction) return false;
+        
+        const search = searchvalue.toLowerCase();
+        return (
+          (transaction.description && transaction.description.toLowerCase().includes(search)) ||
+          (transaction.status && transaction.status.toLowerCase().includes(search)) ||
+          (transaction.type && transaction.type.toLowerCase().includes(search))
+        );
+      });
+      
+      setFilteredTransactions(filtered);
+    }
+  }, [searchvalue, transactions]);
 
   return (
     <>
-      
-      <div className=" flex flex-col w-11/12  gap-8">
-
-        {/* fe moshkla fe loggic el search zabatha matnsash */}
+      <div className="flex flex-col w-11/12 gap-8">
         <Searchfield  
           value={searchvalue}
           onChange={(e) => setSearchvalue(e.target.value)}
           placeholder={"Search by name, status, or type"}
         />
 
-        <Recenttransactions data={filteredTransactions}/>
-
+        <Recenttransactions 
+          data={filteredTransactions} 
+          loading={loading}
+          error={error}
+        />
       </div>
-
-
     </>
-  )
+  );
 }
 
-export default Transactions
+export default Transactions;

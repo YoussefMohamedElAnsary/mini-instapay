@@ -5,25 +5,46 @@ import { useContext } from 'react';
 
 export const TransactionContext = createContext();
 
-
-
 export const TransactionProvider = ({ children }) => {
     const [transactions, setTransactions] = useState([]);
-    const { user } = useContext(UserContext);
-    const userid = user.id;
-    const token = user.token;
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    
+    const { user, token } = useContext(UserContext);
 
     const fetchTransactions = async () => {
-        const response = await TransactionServices.getUserTransactions(userid, token);
-        setTransactions(response.data);
-    }
+        if (!user || !token) {
+            setLoading(false);
+            return;
+        }
+        
+        try {
+            setLoading(true);
+            const response = await TransactionServices.getUserTransactions(user.id, token);
+            setTransactions(response.data);
+            setError(null);
+        } catch (err) {
+            console.error("Error fetching transactions:", err);
+            setError("Failed to load transactions");
+            setTransactions([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        fetchTransactions();
-    }, []);
+        if (user && token) {
+            fetchTransactions();
+        }
+    }, [user, token]);
 
-    return (
-        <TransactionContext.Provider value={{ transactions }}>
+    return ( 
+        <TransactionContext.Provider value={{ 
+            transactions, 
+            loading,
+            error,
+            fetchTransactions
+        }}>
             {children}
         </TransactionContext.Provider>
     );
