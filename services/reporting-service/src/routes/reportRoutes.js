@@ -3,6 +3,8 @@ const router = express.Router();
 const { generateReport, getReports } = require('../controllers/reportController');
 const { authenticateToken } = require('../middlewares/auth');
 
+
+
 // Get reports for a user
 router.get('/', authenticateToken, async (req, res) => {
   try {

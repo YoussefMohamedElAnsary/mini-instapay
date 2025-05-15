@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3004/api/reports';
+const API_URL = 'http://localhost:3003/api/reports';
 
-const getReports = async (userId) => {
+const getReports = async () => {
     const token = localStorage.getItem('token');
-    const response = await axios.get(`${API_URL}/${userId}` 
+    const response = await axios.get(`${API_URL}}` 
         ,{
             headers: {
                 'Authorization': `Bearer ${token}`
