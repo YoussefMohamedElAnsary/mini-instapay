@@ -27,6 +27,18 @@ Then run:
 ```powershell
 docker-compose up -d --build
 ```
+```ubuntu docker compose
+ENV="dev" NODE_ENV="dev" docker compose up -d --build
+```
+```ubuntu kubernetes
+minikube start --driver=docker
+kubectl apply -f ./k8s/dev/
+```
+```to check tables in ubuntu terminal
+psql "postgresql://admin:admin@localhost:5433/user-service-dev"
+\dt             To view available tables
+SELECT * FROM users;
+```
 
 ## To Run Migrations for Specific Environments
 
