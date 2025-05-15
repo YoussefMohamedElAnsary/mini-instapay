@@ -161,7 +161,7 @@ function Signup() {
                 type={showpassword ? "text" : "password"}
                 value={password}
                 label={"password"}
-                placeholder={".........."}
+                placeholder={"**********"}
                 onChange={(e)=> setPassword(e.target.value)}
                 src={showpassword ? openeye : closedeye}
                 oneyeClick={() => setShowPassword(!showpassword)}

@@ -1,8 +1,11 @@
-import Sidebar from "../components/Sidebar"
 import Homebutton from "../components/homebutton";
 import Recenttransactions from "../components/Recenttransactions";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+
+import sendicon from "../assets/send-money_10379156.png";
+import paymenticon from "../assets/payment_4621712.png";
+import receiveicon from "../assets/wallet_18167146.png";
+import reporticon from "../assets/business-report_8655684.png";
+
 import SendMoneyModal from "./SendMoneyModal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -59,25 +62,25 @@ function Home() {
               <Homebutton
                   onClick={openSendMoneyModal}
                   text={"send"}
-                  icon={faUser}
+                  icon={sendicon}
                   className={"bg-primary text-black"}
                   />
               <Homebutton
-                  onClick={()=>navigate("/transactions")}
+                  onClick={()=>navigate("/transactions?type=COLLECTED")}
                   text={"Receive"}
-                  icon={faUser}
+                  icon={receiveicon}
                   className={"bg-secondary text-black"}
                   />
               <Homebutton
-                  onClick={()=>navigate("/transactions")}
+                  onClick={()=>navigate("/transactions?type=SENT")}
                   text={"Payments"}
-                  icon={faUser}
+                  icon={paymenticon}
                   className={"bg-blue-100 text-black"}
                   />
               <Homebutton
                   onClick={()=>navigate("/report")}
                   text={"Reporting"}
-                  icon={faUser}
+                  icon={reporticon}
                   className={"bg-darkgreen text-black"}
                   />
           </div>
@@ -85,7 +88,7 @@ function Home() {
           <div className="recenttransactionsec">
               <Recenttransactions 
                 data={transactions || []} 
-                displayLimit={4}
+                displayLimit={1}
                 loading={transactionsLoading}
                 error={transactionsError}
               />

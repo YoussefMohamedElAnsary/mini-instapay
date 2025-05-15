@@ -50,6 +50,10 @@ function Report() {
     setEndsearchdate("")
   }
 
+  const filterReportsByType = (reports, type) => {
+    return (isFiltered ? filteredReports : reports).filter(report => report.reportType === type);
+  };
+
   const dummyReports = [
     {
       id: "1",
@@ -58,8 +62,8 @@ function Report() {
       startDate: "05-May-2025",
       endDate: "05-May-2025",
       totalTransactions: 15,
-      totalSent: 200.00,
-      totalReceived: 150.00,
+      totalSent: 150,
+      totalReceived: 150,
       generatedAt: "05-May-2025"
     },
     {
@@ -70,13 +74,13 @@ function Report() {
       endDate: "04-May-2025",
       totalTransactions: 12,
       totalSent: 180.50,
-      totalReceived: 90.25,
+      totalReceived: 1000,
       generatedAt: "04-May-2025"
     },
     {
       id: "3",
       userId: "user-1",
-      reportType: "MONTHLY",
+      reportType: "DAILY",
       startDate: "01-Apr-2025",
       endDate: "30-Apr-2025",
       totalTransactions: 120,
@@ -87,7 +91,7 @@ function Report() {
     {
       id: "4",
       userId: "user-2",
-      reportType: "MONTHLY",
+      reportType: "DAILY",
       startDate: "01-Mar-2025",
       endDate: "31-Mar-2025",
       totalTransactions: 85,
@@ -98,7 +102,7 @@ function Report() {
     {
       id: "5",
       userId: "user-3",
-      reportType: "MONTHLY",
+      reportType: "WEEKLY",
       startDate: "01-Feb-2025",
       endDate: "28-Feb-2025",
       totalTransactions: 98,
@@ -121,59 +125,103 @@ function Report() {
   
 
 
-
-
   return (
     <>
-      <div className=" flex flex-col w-11/12 gap-8">
-
-        <div className="grid grid-cols-6 gap-x-36">
-          <div className="col-span-2 ">
-            <Dateinput label={"Start Date"} value={startsearchdate} onChange={(e)=>setStartsearchdate(e.target.value)}/>
+      <div className="flex flex-col w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
+        {/* Filter Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-x-8 items-end">
+          <div className="sm:col-span-1 lg:col-span-2">
+            <Dateinput 
+              label={"Start Date"} 
+              value={startsearchdate} 
+              onChange={(e)=>setStartsearchdate(e.target.value)}
+            />
           </div>
-          <div className="col-span-2 ">
-            <Dateinput label={"End Date"} value={endsearchdate}  onChange={(e)=>setEndsearchdate(e.target.value)}/>
+          <div className="sm:col-span-1 lg:col-span-2">
+            <Dateinput 
+              label={"End Date"} 
+              value={endsearchdate}  
+              onChange={(e)=>setEndsearchdate(e.target.value)}
+            />
           </div>
 
-          <div className="col-span-2 h-fit flex gap-2 flex-col self-end  ">
-            <Button onClick={searchbydate}  className=' text-[#F9F7FE] w-fit bg-secondary' >
-                Apply Filtration   
+          <div className="sm:col-span-2 lg:col-span-2 flex gap-2 flex-row sm:justify-end">
+            <Button 
+              onClick={searchbydate} 
+              className='text-[#F9F7FE] bg-secondary px-4 py-2'
+            >
+              Apply Filtration   
             </Button>
             {isFiltered && (
-              <Button onClick={resetFilter} className='text-[#F9F7FE] bg-primary'>
+              <Button 
+                onClick={resetFilter} 
+                className='text-[#F9F7FE] bg-primary px-4 py-2'
+              >
                 Reset Filter
               </Button>
             )}
           </div>
         </div>
 
-
-
-        <div className=" reportcards  grid grid-cols-6 gap-12">
-
-
-          {(isFiltered ? filteredReports : dummyReports).map((report) => (
-            <>
-            <div className="col-span-2 ">
-                <ReportCard
-                  key={report.id}
-                  reportType={report.reportType}
-                  totalTransactions={report.totalTransactions}
-                  totalSent={report.totalSent}
-                  totalReceived={report.totalReceived}
-                  startDate={report.startDate}
-                  endDate={report.endDate}
-                />
+        {/* Daily Reports Section */}
+        <div className="">
+          <h2 className="text-lg sm:text-xl font-semibold text-[#99C445] mb-4 px-2">Daily Reports</h2>
+          <div className="relative w-full">
+            <div className="flex overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory" style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
+              <div className="flex gap-4 px-2">
+                {filterReportsByType(dummyReports, "DAILY").map((report) => (
+                  <div key={report.id} className="snap-center shrink-0">
+                    <div className="w-[280px] sm:w-[320px] md:w-[350px]">
+                      <ReportCard
+                        totalTransactions={report.totalTransactions}
+                        totalSent={report.totalSent}
+                        totalReceived={report.totalReceived}
+                        startDate={report.startDate}
+                        endDate={report.endDate}
+                      />
+                    </div>
+                  </div>
+                ))}
+                {filterReportsByType(dummyReports, "DAILY").length === 0 && (
+                  <div className="w-full text-center text-gray-500 py-4">
+                    No daily reports available
+                  </div>
+                )}
               </div>
-            </>
-
-            ))}
+            </div>
+          </div>
         </div>
+
+        {/* Weekly Reports Section */}
+        <div className="">
+          <h2 className="text-lg sm:text-xl font-semibold text-[#99C445] mb-4 px-2">Weekly Reports</h2>
+          <div className="relative w-full">
+            <div className="flex overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory" style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
+              <div className="flex gap-4 px-2">
+                {filterReportsByType(dummyReports, "WEEKLY").map((report) => (
+                  <div key={report.id} className="snap-center shrink-0">
+                    <div className="w-[280px] sm:w-[320px] md:w-[350px]">
+                      <ReportCard
+                        totalTransactions={report.totalTransactions}
+                        totalSent={report.totalSent}
+                        totalReceived={report.totalReceived}
+                        startDate={report.startDate}
+                        endDate={report.endDate}
+                      />
+                    </div>
+                  </div>
+                ))}
+                {filterReportsByType(dummyReports, "WEEKLY").length === 0 && (
+                  <div className="w-full text-center text-gray-500 py-4">
+                    No weekly reports available
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-
-
-
-
     </>
   )
 }
