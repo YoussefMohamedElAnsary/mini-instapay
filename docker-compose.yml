@@ -10,17 +10,28 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+      - ./init-db.sh:/init-db.sh
     environment:
       - POSTGRES_USER=${POSTGRES_ADMIN_USER}
       - POSTGRES_PASSWORD=${POSTGRES_ADMIN_PASSWORD}
       - ENV=${ENV} 
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
     networks:
       - instapay-net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_ADMIN_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_ADMIN_USER} && [ -f /var/lib/postgresql/data/.init_complete ] || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: always
+    command: >
+      bash -c "
+        docker-entrypoint.sh postgres &
+        sleep 10 &&
+        bash /init-db.sh &&
+        wait
+      "
 
   frontend:
     build:
@@ -35,6 +46,7 @@ services:
       - user-service
       - transaction-service
       - reporting-service
+    restart: always
     environment:
       # - VITE_API_URL=${VITE_API_URL}
       - NODE_ENV=${NODE_ENV}
@@ -50,10 +62,11 @@ services:
       - "3001:3001"
     env_file: ./envs/.env.${ENV}
     depends_on:
-      postgres:
-        condition: service_healthy
+      user-service-migrations:
+        condition: service_completed_successfully
     networks:
       - instapay-net
+    restart: always
     environment:
       - DB_HOST=${DB_HOST} 
       - DB_NAME=user-service-${ENV}
@@ -69,10 +82,11 @@ services:
       - "3002:3002"
     env_file: ./envs/.env.${ENV}
     depends_on:
-      postgres:
-        condition: service_healthy
+      transaction-service-migrations:
+        condition: service_completed_successfully
     networks:
       - instapay-net
+    restart: always
     environment:
       - DB_HOST=${DB_HOST}
       - DB_NAME=transaction-service-${ENV}
@@ -88,10 +102,11 @@ services:
       - "3003:3003"
     env_file: ./envs/.env.${ENV}
     depends_on:
-      postgres:
-        condition: service_healthy
+      reporting-service-migrations:
+        condition: service_completed_successfully
     networks:
       - instapay-net
+    restart: always
     environment:
       - DB_HOST=${DB_HOST}
       - DB_NAME=reporting-service-${ENV}
@@ -106,6 +121,7 @@ services:
         condition: service_healthy
     networks:
       - instapay-net
+    restart: on-failure
     environment:
       - DB_HOST=${DB_HOST} 
       - DB_NAME=user-service-${ENV}
@@ -121,6 +137,7 @@ services:
         condition: service_healthy
     networks:
       - instapay-net
+    restart: on-failure
     environment:
       - DB_HOST=${DB_HOST}
       - DB_NAME=transaction-service-${ENV}
@@ -136,6 +153,7 @@ services:
         condition: service_healthy
     networks:
       - instapay-net
+    restart: on-failure
     environment:
       - DB_HOST=${DB_HOST}
       - DB_NAME=reporting-service-${ENV}

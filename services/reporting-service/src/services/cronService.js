@@ -14,12 +14,17 @@ const getAllUsers = async () => {
   }
 };
 
+// Helper function to determine if we're in production
+const isProduction = () => process.env.NODE_ENV === 'prod';
+
 // Generate daily reports for all users
 const generateDailyReports = async () => {
   try {
     const users = await getAllUsers();
-    const endDate = moment().endOf('day').toDate();
-    const startDate = moment().startOf('day').toDate();
+    const endDate = moment().toDate();
+    const startDate = isProduction()
+      ? moment().startOf('day').toDate()
+      : moment().subtract(1, 'minute').toDate();
 
     for (const user of users) {
       await generateReport(user.id, startDate, endDate, 'DAILY');
@@ -30,27 +35,14 @@ const generateDailyReports = async () => {
   }
 };
 
-// Generate a single test report for testing purposes
-const generateTestReport = async () => {
-  try {
-    // Use a fixed test user ID or fetch the first user
-    const testUserId = 'test-user-id'; // Replace with an actual user ID when testing
-    const endDate = moment().toDate();
-    const startDate = moment().subtract(1, 'hour').toDate();
-    
-    await generateReport(testUserId, startDate, endDate, 'DAILY');
-    console.log(`Test report generated at ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-  } catch (error) {
-    console.error('Error generating test report:', error);
-  }
-};
-
 // Generate weekly reports for all users
 const generateWeeklyReports = async () => {
   try {
     const users = await getAllUsers();
-    const endDate = moment().endOf('week').toDate();
-    const startDate = moment().startOf('week').toDate();
+    const endDate = moment().toDate();
+    const startDate = isProduction()
+      ? moment().startOf('week').toDate()
+      : moment().subtract(5, 'minutes').toDate();
 
     for (const user of users) {
       await generateReport(user.id, startDate, endDate, 'WEEKLY');
@@ -61,60 +53,39 @@ const generateWeeklyReports = async () => {
   }
 };
 
-// Generate monthly reports for all users
-const generateMonthlyReports = async () => {
-  try {
-    const users = await getAllUsers();
-    const endDate = moment().endOf('month').toDate();
-    const startDate = moment().startOf('month').toDate();
+if (isProduction()) {
+  // Production schedules
+  console.log('Initializing production report schedules...');
+  
+  // Daily reports at 23:59 every day
+  cron.schedule('59 23 * * *', () => {
+    console.log('Running daily report generation...');
+    generateDailyReports();
+  });
 
-    for (const user of users) {
-      await generateReport(user.id, startDate, endDate, 'MONTHLY');
-    }
-    console.log('Monthly reports generated successfully');
-  } catch (error) {
-    console.error('Error generating monthly reports:', error);
-  }
-};
+  // Weekly reports every Sunday at 23:59
+  cron.schedule('59 23 * * 0', () => {
+    console.log('Running weekly report generation...');
+    generateWeeklyReports();
+  });
+} else {
+  // Development and Staging schedules
+  console.log(`Initializing ${process.env.NODE_ENV} report schedules...`);
+  
+  // "Daily" reports every minute
+  cron.schedule('* * * * *', () => {
+    console.log(`Running daily report generation (every minute) in ${process.env.NODE_ENV}...`);
+    generateDailyReports();
+  });
 
-// Schedule daily reports (every day at 23:59)
-cron.schedule('59 23 * * *', () => {
-  console.log('Running daily report generation...');
-  generateDailyReports();
-});
-
-// Schedule weekly reports (every Sunday at 23:59)
-cron.schedule('59 23 * * 0', () => {
-  console.log('Running weekly report generation...');
-  generateWeeklyReports();
-});
-
-// Schedule monthly reports (last day of each month at 23:59)
-cron.schedule('59 23 28-31 * *', () => {
-  const tomorrow = moment().add(1, 'day');
-  if (tomorrow.date() === 1) {
-    console.log('Running monthly report generation...');
-    generateMonthlyReports();
-  }
-});
-
-// TEST CRON JOB - Runs every minute for testing purposes
-// Format: second(optional) minute hour day-of-month month day-of-week
-cron.schedule('* * * * *', () => {
-  console.log('Running test report generation every minute...');
-  generateDailyReports();
-});
-
-// FAST TEST CRON JOB - Runs every 5 seconds for quick testing
-// Note: This uses the seconds field which is optional in cron
-cron.schedule('*/5 * * * * *', () => {
-  console.log('Running super fast test report generation every 5 seconds...');
-  generateTestReport();
-});
+  // "Weekly" reports every 5 minutes
+  cron.schedule('*/5 * * * *', () => {
+    console.log(`Running weekly report generation (every 5 minutes) in ${process.env.NODE_ENV}...`);
+    generateWeeklyReports();
+  });
+}
 
 module.exports = {
   generateDailyReports,
-  generateWeeklyReports,
-  generateMonthlyReports,
-  generateTestReport
-}; 
+  generateWeeklyReports
+};
