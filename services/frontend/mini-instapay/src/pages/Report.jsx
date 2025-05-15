@@ -3,7 +3,7 @@ import Topusername from "../components/Topusername"
 import Dateinput from "../components/Dateinput"
 import Button from '../components/Button'
 import { useState } from "react"
-import MonthlyReportCard from "../components/ReoprtCard"
+import ReportCard from "../components/ReoprtCard"
 
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
@@ -16,7 +16,7 @@ function Report() {
   const [filteredReports, setFilteredReports] = useState([])
   const [isFiltered, setIsFiltered] = useState(false)
 
-  const {user} = useContext(UserContext)
+  const { user: _ } = useContext(UserContext)
 
   const searchbydate = () => {
     if (!startsearchdate || !endsearchdate) {
@@ -54,38 +54,27 @@ function Report() {
     {
       id: "1",
       userId: "user-1",
-      reportType: "MONTHLY",
-      startDate: "01-Apr-2025",
-      endDate: "30-Apr-2025",
-      totalTransactions: 120,
-      totalSent: 1500.00,
-      totalReceived: 500.00,
-      generatedAt: "30-Apr-2025"
+      reportType: "DAILY",
+      startDate: "05-May-2025",
+      endDate: "05-May-2025",
+      totalTransactions: 15,
+      totalSent: 200.00,
+      totalReceived: 150.00,
+      generatedAt: "05-May-2025"
     },
     {
       id: "2",
-      userId: "user-2",
-      reportType: "MONTHLY",
-      startDate: "01-Mar-2025",
-      endDate: "31-Mar-2025",
-      totalTransactions: 85,
-      totalSent: 2200.50,
-      totalReceived: 700.25,
-      generatedAt: "31-Mar-2025"
+      userId: "user-1",
+      reportType: "DAILY",
+      startDate: "04-May-2025",
+      endDate: "04-May-2025",
+      totalTransactions: 12,
+      totalSent: 180.50,
+      totalReceived: 90.25,
+      generatedAt: "04-May-2025"
     },
     {
       id: "3",
-      userId: "user-3",
-      reportType: "MONTHLY",
-      startDate: "01-Feb-2025",
-      endDate: "28-Feb-2025",
-      totalTransactions: 98,
-      totalSent: 1800.75,
-      totalReceived: 900.00,
-      generatedAt: "28-Feb-2025"
-    },  
-    {
-      id: "4",
       userId: "user-1",
       reportType: "MONTHLY",
       startDate: "01-Apr-2025",
@@ -96,7 +85,7 @@ function Report() {
       generatedAt: "30-Apr-2025"
     },
     {
-      id: "5",
+      id: "4",
       userId: "user-2",
       reportType: "MONTHLY",
       startDate: "01-Mar-2025",
@@ -107,7 +96,7 @@ function Report() {
       generatedAt: "31-Mar-2025"
     },
     {
-      id: "6",
+      id: "5",
       userId: "user-3",
       reportType: "MONTHLY",
       startDate: "01-Feb-2025",
@@ -116,6 +105,17 @@ function Report() {
       totalSent: 1800.75,
       totalReceived: 900.00,
       generatedAt: "28-Feb-2025"
+    },  
+    {
+      id: "6",
+      userId: "user-1",
+      reportType: "WEEKLY",
+      startDate: "01-May-2025",
+      endDate: "07-May-2025",
+      totalTransactions: 45,
+      totalSent: 600.00,
+      totalReceived: 200.00,
+      generatedAt: "07-May-2025"
     }
   ];
   
@@ -155,7 +155,7 @@ function Report() {
           {(isFiltered ? filteredReports : dummyReports).map((report) => (
             <>
             <div className="col-span-2 ">
-                <MonthlyReportCard
+                <ReportCard
                   key={report.id}
                   reportType={report.reportType}
                   totalTransactions={report.totalTransactions}

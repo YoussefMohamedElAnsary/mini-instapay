@@ -25,6 +25,8 @@ function Recenttransactions({ data = [], displayLimit, loading = false, error = 
     return new Date(b.createdAt) - new Date(a.createdAt);
   });
 
+
+
   return (
    <>
    {Array.isArray(sortedData) && sortedData.length > 0 ? (
@@ -40,6 +42,9 @@ function Recenttransactions({ data = [], displayLimit, loading = false, error = 
         {sortedData.slice(0, displayLimit).map((transaction) => (
             <TransactionItem key={transaction.id} transaction={transaction} img={img} />
         ))}
+
+ 
+        {/* // add filtered  payment and received transactions here    home page >>    /transactions/payment or /transactions/received */}
 
         </div>
 

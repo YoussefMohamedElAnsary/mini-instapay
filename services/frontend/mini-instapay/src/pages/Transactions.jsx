@@ -12,11 +12,12 @@ function Transactions() {
   const [searchvalue, setSearchvalue] = useState("");
   const [filteredTransactions, setFilteredTransactions] = useState([]);
 
-  // Fetch transactions when component mounts
   useEffect(() => {
     fetchTransactions();
   }, []);
 
+
+  // Filter transactions based on search value
   useEffect(() => {
     if (!Array.isArray(transactions)) {
       setFilteredTransactions([]);
@@ -24,7 +25,7 @@ function Transactions() {
     }
 
     if (searchvalue.trim() === "") {
-      setFilteredTransactions(transactions); // Show all if input is empty
+      setFilteredTransactions(transactions);
     } else {
       const filtered = transactions.filter((transaction) => {
         if (!transaction) return false;
@@ -41,6 +42,7 @@ function Transactions() {
     }
   }, [searchvalue, transactions]);
 
+
   return (
     <>
       <div className="flex flex-col w-11/12 gap-8">
@@ -56,6 +58,7 @@ function Transactions() {
           error={error}
         />
       </div>
+      
     </>
   );
 }

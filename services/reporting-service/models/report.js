@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     reportType: {
-      type: DataTypes.ENUM('WEEKLY', 'MONTHLY'),
+      type: DataTypes.ENUM('DAILY', 'WEEKLY', 'MONTHLY'),
       allowNull: false
     },
     startDate: {

@@ -24,7 +24,6 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
 
   const { user, token, refreshUser } = useContext(UserContext);
 
-  // Function to cancel a pending transaction
   const cancelTransaction = async () => {
     if (transactionId) {
       try {
@@ -56,6 +55,7 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
       }
 
       setLoading(true)
+      
       try {
 
         const response = await TransactionServices.sendMoney(user.id, receiverPhoneNumber, amount, description ? description : "", token)
@@ -79,7 +79,6 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
         return
       }
 
-
     }
 
     else if (step === 2) {
@@ -89,17 +88,16 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
       }
 
       setLoading(true)
+      
       try {
-        console.log(token)
         const pinResponse = await authService.verifyPin(pinCode, token)
-        
+
         if (pinResponse.status >= 200 && pinResponse.status < 300) {
           // PIN verification successful, now confirm the transaction
           try {
             const confirmResponse = await TransactionServices.confirmTransaction(transactionId, token);
             console.log("Transaction confirmed:", confirmResponse.data);
             
-            // Only proceed if confirmation is successful
             if (confirmResponse.status >= 200 && confirmResponse.status < 300) {
               setLoading(false);
               setStep(3);
@@ -144,7 +142,6 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
   };
 
   const confirmClose = async () => {
-    // Cancel the transaction if we're in step 2
     if (step === 2 && transactionId) {
       await cancelTransaction();
     }

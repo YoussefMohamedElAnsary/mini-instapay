@@ -1,5 +1,5 @@
 
-function MonthlyReportCard({
+function ReportCard({
     reportType,
     totalTransactions,
     totalSent,
@@ -43,5 +43,5 @@ function MonthlyReportCard({
     );
   }
   
-  export default MonthlyReportCard;
+  export default ReportCard;
   
