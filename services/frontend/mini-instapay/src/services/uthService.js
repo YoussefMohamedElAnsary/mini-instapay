@@ -21,6 +21,11 @@ const verifyPin = async (pin, token) => {
 }
 
 
-export default { login, register, verifyPin };
+const getUser = async (userId) => { 
+    return api.get(`/users/${userId}`);
+}
+
+
+export default { login, register, verifyPin, getUser };
 
 
