@@ -14,6 +14,7 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
+
 // Generate a new report
 router.post('/generate', authenticateToken, async (req, res) => {
   try {

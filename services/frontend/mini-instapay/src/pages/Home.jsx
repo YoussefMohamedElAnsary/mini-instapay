@@ -88,7 +88,7 @@ function Home() {
           <div className="recenttransactionsec">
               <Recenttransactions 
                 data={transactions || []} 
-                displayLimit={1}
+                displayLimit={2}
                 loading={transactionsLoading}
                 error={transactionsError}
               />

@@ -11,7 +11,7 @@ function TransactionItem({ transaction, img }) {
   
   const isSender = user && transaction.senderUserId === user.id;
   const isReceiver = user && transaction.receiverUserId === user.id;
-  
+
   const amountPrefix = isSender ? '-' : '+';
   const amountColorClass = transaction.status === 'FAILED' 
     ? 'text-red-700' 
@@ -81,3 +81,4 @@ function TransactionItem({ transaction, img }) {
 }
 
 export default TransactionItem
+
