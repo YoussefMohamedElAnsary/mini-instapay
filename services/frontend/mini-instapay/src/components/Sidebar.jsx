@@ -70,7 +70,7 @@ function Sidebar() {
                         ${location.pathname === '/transactions' ? 'bg-[#9BC3E3] font-bold ' : ''}
                     `}>
                     <img className="w-6 xl:w-fit" src={transactionsicon} alt="transaction" />
-                    Transactions
+                     All Transactions
                 </li>
             </Link>
             <Link to="/settings" className="block">

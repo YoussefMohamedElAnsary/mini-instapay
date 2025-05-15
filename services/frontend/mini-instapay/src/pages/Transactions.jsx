@@ -6,28 +6,43 @@ import { useEffect, useState } from "react"
 import { UserContext } from '../context/UserContext';
 import { useContext } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
+import { useSearchParams } from "react-router-dom"
 
 function Transactions() {
   const { transactions, loading, error, fetchTransactions } = useContext(TransactionContext);
+  const { user } = useContext(UserContext);
   const [searchvalue, setSearchvalue] = useState("");
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [searchParams] = useSearchParams();
+
+  const filteredTransactionType = searchParams.get("type");
 
   useEffect(() => {
     fetchTransactions();
   }, []);
 
-
-  // Filter transactions based on search value
   useEffect(() => {
-    if (!Array.isArray(transactions)) {
+    if (!Array.isArray(transactions) || !user) {
       setFilteredTransactions([]);
       return;
     }
 
-    if (searchvalue.trim() === "") {
-      setFilteredTransactions(transactions);
-    } else {
-      const filtered = transactions.filter((transaction) => {
+    let filtered = [...transactions];
+
+    if (filteredTransactionType) {
+      filtered = filtered.filter((transaction) => {
+        if (filteredTransactionType === "COLLECTED") {
+          return transaction.receiverUserId === user.id;
+        } else if (filteredTransactionType === "SENT") {
+          return transaction.senderUserId === user.id;
+        }
+        return true;
+      });
+    }
+
+    // Then apply search filter
+    if (searchvalue.trim() !== "") {
+      filtered = filtered.filter((transaction) => {
         if (!transaction) return false;
         
         const search = searchvalue.toLowerCase();
@@ -37,20 +52,26 @@ function Transactions() {
           (transaction.type && transaction.type.toLowerCase().includes(search))
         );
       });
-      
-      setFilteredTransactions(filtered);
     }
-  }, [searchvalue, transactions]);
 
+    setFilteredTransactions(filtered);
+  }, [searchvalue, transactions, filteredTransactionType, user]);
 
   return (
     <>
       <div className="flex flex-col w-11/12 gap-8">
-        <Searchfield  
-          value={searchvalue}
-          onChange={(e) => setSearchvalue(e.target.value)}
-          placeholder={"Search by name, status, or type"}
-        />
+        <div className="flex flex-col gap-2">
+          <h2 className="text-xl font-semibold">
+            {filteredTransactionType === "COLLECTED" ? "Received Payments" :
+             filteredTransactionType === "SENT" ? "Sent Payments" :
+             "All Transactions"}
+          </h2>
+          <Searchfield  
+            value={searchvalue}
+            onChange={(e) => setSearchvalue(e.target.value)}
+            placeholder={"Search by name, status, or type"}
+          />
+        </div>
 
         <Recenttransactions 
           data={filteredTransactions} 
@@ -58,7 +79,6 @@ function Transactions() {
           error={error}
         />
       </div>
-      
     </>
   );
 }
