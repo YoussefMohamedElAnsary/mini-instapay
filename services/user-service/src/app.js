@@ -11,10 +11,21 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 
+app.get("/api/users", async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: { exclude: ['password'] }
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Fetch All Users Error:", error.message);
+    res.status(500).json({ message: "Failed to fetch users", error: error.message });
+  }
+});
+
 app.get("/api/profile", require("./middlewares/auth"), (req, res) => {
   res.json({ user: req.user.toJSON() });
 });
-
 
 app.post("/api/user/update-balance", async (req, res) => {
   const { senderUserId, receiverUserId, amount } = req.body;
@@ -79,7 +90,6 @@ app.post("/api/user/update-balance", async (req, res) => {
       .json({ message: "Failed to update balances", error: error.message });
   }
 });
-
 
 app.get("/api/user/:phoneNumber", async (req, res) => {
   const { phoneNumber } = req.params;

@@ -14,7 +14,7 @@ module.exports = {
         allowNull: false
       },
       reportType: {
-        type: DataTypes.ENUM('MONTHLY', 'WEEKLY'),
+        type: DataTypes.ENUM('DAILY', 'WEEKLY'),
         allowNull: false
       },
       startDate: {
@@ -33,7 +33,7 @@ module.exports = {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0.00
       },
-      totalRecieved: {
+      totalReceived: {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0.00
       },
