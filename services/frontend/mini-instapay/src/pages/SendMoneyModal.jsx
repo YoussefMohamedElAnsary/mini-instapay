@@ -8,7 +8,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import TransactionServices from "../services/TransactionServices";
-import authService from "../services/uthService";
+import authService from "../services/AuthService";
 
 
 function SendMoneyModal({ isOpen, step, setStep, closeModal }) {

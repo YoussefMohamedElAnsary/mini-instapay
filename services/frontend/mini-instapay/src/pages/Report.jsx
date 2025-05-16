@@ -3,7 +3,7 @@ import Topusername from "../components/Topusername"
 import Dateinput from "../components/Dateinput"
 import Button from '../components/Button'
 import { useEffect, useState } from "react"
-import ReportCard from "../components/ReoprtCard"
+import ReportCard from "../components/ReportCard"
 import ReportServices from "../services/ReportServices"
 
 import { UserContext } from "../context/UserContext";

@@ -74,8 +74,6 @@ function ReportCard({
     );
   }
   
-
-  // claude habebna
   function formatDateTime(dateString) {
     try {
       // Handle different date formats by normalizing to YYYY-MM-DD

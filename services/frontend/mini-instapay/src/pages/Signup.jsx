@@ -9,7 +9,7 @@ import closedeye from '..//assets/crossed-eye.png'
 import Arrow from '../components/arrow'
 import { useState } from 'react'
 
-import authService from '../services/uthService'
+import authService from '../services/AuthService'
 
 
 

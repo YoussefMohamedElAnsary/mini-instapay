@@ -2,7 +2,7 @@ import React from 'react'
 import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { useState, useEffect } from 'react';
-import uthService from '../services/uthService';
+import uthService from '../services/AuthService';
 
 function TransactionItem({ transaction, img }) {
   const { user } = useContext(UserContext);

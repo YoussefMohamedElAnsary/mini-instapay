@@ -7,7 +7,7 @@ import openeye from '..//assets/eye.png'
 import closedeye from '..//assets/crossed-eye.png'
 import Arrow from '../components/arrow'
 
-import authService from '../services/uthService'
+import authService from '../services/AuthService'
 import { UserContext } from '../context/UserContext'
 import { useContext } from 'react'
 
