@@ -35,9 +35,17 @@ function Report() {
       setLoading(false)
     }
   }
-
+  
   useEffect(() => {
-    fetchReports()
+    fetchReports();
+    
+    // Set up interval to fetch reports every 3 minutes
+    const interval = setInterval(() => {
+      fetchReports();
+    }, 1 * 60 * 1000); // 1 minute in milliseconds
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, [])
 
 
@@ -83,8 +91,8 @@ function Report() {
 
   return (
     <>
-      <div className="flex flex-col w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
-        {/* Filter Section */}
+      <div className="flex flex-col w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 gap-6">
+     
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-x-8 items-end">
           <div className="sm:col-span-1 lg:col-span-2">
             <Dateinput 

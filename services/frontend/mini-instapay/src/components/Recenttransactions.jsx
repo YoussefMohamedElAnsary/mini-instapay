@@ -12,13 +12,6 @@ function Recenttransactions({ data = [], displayLimit, loading = false, error = 
     );
   }
 
-  if (error) {
-    return (
-      <div className="relative z-10 rounded-md bg-white shadow-md p-4 flex items-center justify-center h-40">
-        <h2 className="text-xl font-medium text-red-500">{error}</h2>
-      </div>
-    );
-  }
 
   // Sort transactions by createdAt date (newest first)
   const sortedData = [...data].sort((a, b) => {
@@ -51,7 +44,7 @@ function Recenttransactions({ data = [], displayLimit, loading = false, error = 
     </div>
     ) : (
       <div className="relative z-10 rounded-md bg-white shadow-md p-4 flex items-center justify-center h-40">
-        <h2 className="text-xl font-medium text-gray-500">No transactions found</h2>
+        <h2 className="text-xl font-medium text-gray-500">No transactions found</h2> 
       </div>
     )}
     </>
