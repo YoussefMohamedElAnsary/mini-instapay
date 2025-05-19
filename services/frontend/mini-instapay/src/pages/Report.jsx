@@ -20,17 +20,25 @@ function Report() {
   const { user: _ } = useContext(UserContext)
 
   const [reports, setReports] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-
-  useEffect(() => {
-    const fetchReports = async () => {
+  const fetchReports = async () => {
+    try {
+      setLoading(true);
       const reports = await ReportServices.getReports()
       setReports(reports)
-      console.log(reports)
+      setError(null)
+    } catch (error) {
+      setError(error)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchReports()
   }, [])
-
 
 
   const searchbydate = () => {
@@ -130,11 +138,15 @@ function Report() {
                     </div>
                   </div>
                 ))}
+
                 {filterReportsByType(reports, "DAILY").length === 0 && (
                   <div className="w-full text-center text-gray-500 py-4">
-                    No daily reports available
+                    {error && <div>Error: {error.message}</div>}
+                    {loading && <div>Loading...</div>}
+                    {!loading && reports.length === 0 && <div>No reports found</div>}
                   </div>
                 )}
+
               </div>
             </div>
           </div>
@@ -161,13 +173,17 @@ function Report() {
                 ))}
                 {filterReportsByType(reports, "WEEKLY").length === 0 && (
                   <div className="w-full text-center text-gray-500 py-4">
-                    No weekly reports available
+                    {error && <div>Error: {error.message}</div>}
+                    {loading && <div>Loading...</div>}
+                    {!loading && reports.length === 0 && <div>No reports found</div>}
                   </div>
                 )}
               </div>
             </div>
           </div>
         </div>
+
+
 
       </div>
     </>

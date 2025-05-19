@@ -4,16 +4,14 @@ body {
 background-color: rgb(245, 245, 245);
 }
 
-
 @theme{
     
     --color-primary:   #99C445 ;
+    --color-primary-hover: #99C44566 ;
     --color-secondary: #5E99CA ;
     --color-blue-100: #9BC3E3 ;
     --color-blue-50: #D9E1FF ;
     --color-darkgreen: #95AD67 ;
-
-
     
 }
 

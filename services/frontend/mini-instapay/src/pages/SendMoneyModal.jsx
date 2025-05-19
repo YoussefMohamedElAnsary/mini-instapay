@@ -44,8 +44,8 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
         return
       }
 
-      if (amount < 0) {
-        setError("Amount cannot be negative")
+      if (amount <= 0) {
+        setError("Amount cannot be negative or zero")
         return
       }
 
@@ -54,10 +54,15 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
         return
       }
 
+      // Check if user has sufficient balance
+      if (parseFloat(amount) > parseFloat(user.balance)) {
+        setError("Insufficient balance")
+        return
+      }
+
       setLoading(true)
       
       try {
-
         const response = await TransactionServices.sendMoney(user.id, receiverPhoneNumber, amount, description ? description : "", token)
 
         if (response.status >= 200 && response.status < 300) {
@@ -74,18 +79,20 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
         }
       } catch (error) {
         console.log(error)
-        setError(error.response.data.message)
+        setError(error.response?.data?.message || "Failed to send money")
         setLoading(false)
         return
       }
-
     }
 
     else if (step === 2) {
-      if (pinCode.length !== 4) {
-        setError("Pin code must be 4 digits")
+      if (!pinCode || pinCode.length !== 4) {
+        setError("PIN must be exactly 4 digits")
         return
       }
+
+      
+        
 
       setLoading(true)
       
@@ -104,28 +111,31 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
               await refreshUser(token);
               return;
             } else {
-              setError(confirmResponse.data.message || "Failed to confirm transaction");
+              setError(confirmResponse.data?.error || "Failed to confirm transaction");
               setLoading(false);
               return;
             }
           } catch (confirmError) {
-            console.error("Transaction confirmation error:", confirmError);
-            setError(confirmError.response?.data?.message || "Failed to confirm transaction");
+            const errorMessage = confirmError.response?.data?.error || "Failed to confirm transaction";
+            setError(errorMessage);
             setLoading(false);
             return;
           }
         }
         else {
-          setError(pinResponse.data.message)
+          setError(pinResponse.data?.error || "Invalid PIN")
+          console.log("pinResponse", pinResponse)
           setLoading(false)
           return
         }
       } catch (error) {
-        setError(error.response?.data?.message || "PIN verification failed")
-        setLoading(false)
-        return
+        console.log("PIN verification error:", error.response?.data);
+        setError(error.response?.data?.error || "PIN verification failed");
+        setLoading(false);
+        return;
       }
     }
+
     else if (step === 3) {
       await refreshUser(token);
       closeModal();
@@ -207,6 +217,8 @@ function SendMoneyModal({ isOpen, step, setStep, closeModal }) {
               <Button  onClick={handleNext} className=' mt-2 hover:bg-[#9ac445e9] text-white bg-primary'  >
                 Confirm Process  
               </Button>
+
+              {error && <p className="text-red-500 mt-2">{error}</p>}
             </div>
           }
 

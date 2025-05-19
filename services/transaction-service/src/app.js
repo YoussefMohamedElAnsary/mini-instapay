@@ -163,7 +163,12 @@ app.get("/api/transactions", async (req, res) => {
 // params: userId 
 // returns: all transactions for the user
 app.get("/api/transactions/user/:userId", async (req, res) => {
+
+
+  console.log("::::meow meow meow ::::::transaction service::::::userId from transaction service:::::", req.params.userId);
   const { userId } = req.params;
+
+
 
   try {
     const userTransactions = await Transaction.findAll({

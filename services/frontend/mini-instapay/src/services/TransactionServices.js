@@ -50,7 +50,9 @@ const getUserTransactions = async (userid , token) => {
             }
         }
     )
+    console.log('::::::::from transaction service:::::Transactions found for user >>>>>>', userid, response.data);
     return response;
+
 }
 
 export default { sendMoney, cancelTransaction, confirmTransaction ,getUserTransactions};

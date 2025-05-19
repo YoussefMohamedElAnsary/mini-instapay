@@ -31,7 +31,7 @@ app.post("/api/user/update-balance", async (req, res) => {
   const { senderUserId, receiverUserId, amount } = req.body;
 
   try {
-    // Parse amount to ensure it's a valid number
+    // Parse amount to ensure it's a valid number 
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount)) {
       return res.status(400).json({ message: "Invalid amount format" });

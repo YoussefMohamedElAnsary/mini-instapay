@@ -1,15 +1,27 @@
 const cron = require('node-cron');
 const { generateReport } = require('../controllers/reportController');
 const axios = require('axios');
-const moment = require('moment');
+const moment = require('moment-timezone');
+
+const TIMEZONE = 'Africa/Cairo';
 
 // Function to get all users from user service
 const getAllUsers = async () => {
   try {
     const response = await axios.get(`${process.env.USER_SERVICE_URL}/api/users`);
+    
+    if (!response.data || !Array.isArray(response.data)) {
+      throw new Error('Invalid response from user service');
+    }
+
+    console.log(`Successfully fetched ${response.data.length} users`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching users:', error);
+    console.error('Error fetching users:', error.message);
+    if (error.response) {
+      console.error('Response data:', error.response.data);
+      console.error('Response status:', error.response.status);
+    }
     return [];
   }
 };
@@ -20,36 +32,70 @@ const isProduction = () => process.env.NODE_ENV === 'prod';
 // Generate daily reports for all users
 const generateDailyReports = async () => {
   try {
+    console.log('Starting daily report generation...');
     const users = await getAllUsers();
-    const endDate = moment().toDate();
-    const startDate = isProduction()
-      ? moment().startOf('day').toDate()
-      : moment().subtract(1, 'minute').toDate();
+    
+    if (users.length === 0) {
+      console.log('No users found to generate reports for');
+      return;
+    }
+
+    // Use start and end of current day in Africa/Cairo timezone
+    const startDate = moment().tz(TIMEZONE).startOf('day').toDate();
+    const endDate = moment().tz(TIMEZONE).endOf('day').toDate();
+
+    console.log(`Generating daily reports for ${users.length} users`);
+    console.log(`Date range: ${moment(startDate).format('YYYY-MM-DD HH:mm:ss')} to ${moment(endDate).format('YYYY-MM-DD HH:mm:ss')}`);
 
     for (const user of users) {
-      await generateReport(user.id, startDate, endDate, 'DAILY');
+      try {
+        console.log(`Generating daily report for user ${user.id}`);
+        await generateReport(user.id, startDate, endDate, 'DAILY');
+        console.log(`Successfully generated daily report for user ${user.id}`);
+      } catch (error) {
+        console.error(`Error generating daily report for user ${user.id}:`, error.message);
+        // Continue with next user even if one fails
+        continue;
+      }
     }
-    console.log('Daily reports generated successfully');
+    console.log('Daily reports generation completed');
   } catch (error) {
-    console.error('Error generating daily reports:', error);
+    console.error('Error in generateDailyReports:', error.message);
   }
 };
 
 // Generate weekly reports for all users
 const generateWeeklyReports = async () => {
   try {
+    console.log('Starting weekly report generation...');
     const users = await getAllUsers();
-    const endDate = moment().toDate();
-    const startDate = isProduction()
-      ? moment().startOf('week').toDate()
-      : moment().subtract(5, 'minutes').toDate();
+    
+    if (users.length === 0) {
+      console.log('No users found to generate reports for');
+      return;
+    }
+
+    // Use start of week and end of current day in Africa/Cairo timezone
+    const startDate = moment().tz(TIMEZONE).startOf('week').toDate();
+    const endDate = moment().tz(TIMEZONE).endOf('day').toDate();
+
+    console.log(`Generating weekly reports for ${users.length} users`);
+    console.log(`Date range: ${moment(startDate).format('YYYY-MM-DD HH:mm:ss')} to ${moment(endDate).format('YYYY-MM-DD HH:mm:ss')}`);
 
     for (const user of users) {
-      await generateReport(user.id, startDate, endDate, 'WEEKLY');
+      try {
+        console.log(`Generating weekly report for user ${user.id}`);
+        await generateReport(user.id, startDate, endDate, 'WEEKLY');
+        console.log(`Successfully generated weekly report for user ${user.id}`);
+      } catch (error) {
+        console.error(`Error generating weekly report for user ${user.id}:`, error.message);
+        // Continue with next user even if one fails
+        continue;
+      }
     }
-    console.log('Weekly reports generated successfully');
+    console.log('Weekly reports generation completed');
   } catch (error) {
-    console.error('Error generating weekly reports:', error);
+    console.error('Error in generateWeeklyReports:', error.message);
   }
 };
 
@@ -72,15 +118,15 @@ if (isProduction()) {
   // Development and Staging schedules
   console.log(`Initializing ${process.env.NODE_ENV} report schedules...`);
   
-  // "Daily" reports every minute
-  cron.schedule('* * * * *', () => {
-    console.log(`Running daily report generation (every minute) in ${process.env.NODE_ENV}...`);
+  // "Daily" reports every 3 minutes
+  cron.schedule('*/3 * * * *', () => {
+    console.log(`Running daily report generation (every 3 minutes) in ${process.env.NODE_ENV}...`);
     generateDailyReports();
   });
 
-  // "Weekly" reports every 5 minutes
-  cron.schedule('*/5 * * * *', () => {
-    console.log(`Running weekly report generation (every 5 minutes) in ${process.env.NODE_ENV}...`);
+  // "Weekly" reports every 6 minutes
+  cron.schedule('*/6 * * * *', () => {
+    console.log(`Running weekly report generation (every 6 minutes) in ${process.env.NODE_ENV}...`);
     generateWeeklyReports();
   });
 }
