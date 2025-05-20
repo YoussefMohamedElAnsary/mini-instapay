@@ -9,3 +9,6 @@ data:
   DB_PORT:                   "5432"
   DB_NAME_REPORTING_SERVICE: reporting-service-dev
   ENV:                       dev
+  TRANSACTION_SERVICE_URL: http://transaction-service:3002
+  REPORTING_SERVICE_URL: http://reporting-service:3003
+  USER_SERVICE_URL: http://user-service:3001

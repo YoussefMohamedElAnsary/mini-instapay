@@ -11,6 +11,11 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
+
 app.get("/api/users", async (req, res) => {
   try {
     const users = await User.findAll({

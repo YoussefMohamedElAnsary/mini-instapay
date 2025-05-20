@@ -15,6 +15,12 @@ console.log(`Loaded .env file from: ${envPath}`);
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
+
 // Environment variables for other services
 const USER_SERVICE_URL = process.env.USER_SERVICE_URL;
 const REPORTING_SERVICE_URL = process.env.REPORTING_SERVICE_URL;
@@ -69,8 +75,7 @@ app.post("/api/transactions", async (req, res) => {
 
     console.log("Transaction created:", transaction.id);
     
-    // Return the transaction info immediately
-    // Balances will be updated after PIN verification
+
     res.status(201).json(transaction);
     
   } catch (error) {
