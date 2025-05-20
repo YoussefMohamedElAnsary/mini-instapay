@@ -1,9 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: reporting-service-config
+  name: reporting-service-configmap
+  namespace: instapay-dev
 data:
-  DB_USER:                      admin
-  DB_HOST:                      postgres
-  DB_NAME_REPORTING_SERVICE:    reporting-service-dev
-  NODE_ENV:                     dev
+  DB_USER:                   admin
+  DB_HOST:                   postgres
+  DB_PORT:                   "5432"
+  DB_NAME_REPORTING_SERVICE: reporting-service-dev
+  ENV:                       dev

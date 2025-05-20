@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: instapay-staging
+  labels:
+    app: frontend
+    environment: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+      environment: staging
+  template:
+    metadata:
+      labels:
+        app: frontend
+        environment: staging
+    spec:
+      containers:
+      - name: frontend
+        image: instapay-frontend:staging
+        ports:
+        - containerPort: 80

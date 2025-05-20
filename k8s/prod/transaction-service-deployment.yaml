@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transaction-service
+  namespace: instapay-prod
+  labels:
+    app: transaction-service
+    environment: prod
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: transaction-service
+      environment: prod
+  template:
+    metadata:
+      labels:
+        app: transaction-service
+        environment: prod
+    spec:
+      containers:
+      - name: transaction-service
+        image: instapay/transaction-service:prod
+        ports:
+        - containerPort: 3002
+        envFrom:
+        - configMapRef:
+            name: transaction-service-config
+        - secretRef:
+            name: postgres-secret
+        env:
+          - name: NODE_ENV
+            value: "prod"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3002
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3002
+          initialDelaySeconds: 15
+          periodSeconds: 20

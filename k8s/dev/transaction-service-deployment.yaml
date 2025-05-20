@@ -2,15 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: transaction-service
+  namespace: instapay-dev
+  labels:
+    app: transaction-service
+    environment: dev
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: transaction-service
+      environment: dev
   template:
     metadata:
       labels:
         app: transaction-service
+        environment: dev
     spec:
       containers:
       - name: transaction-service
@@ -19,12 +25,21 @@ spec:
         - containerPort: 3002
         envFrom:
         - configMapRef:
-            name: transaction-service-config
+            name: transaction-service-configmap
         - secretRef:
             name: postgres-secret
+        env:
+          - name: ENV
+            value: "dev"
         readinessProbe:
           httpGet:
             path: /health
             port: 3002
           initialDelaySeconds: 5
           periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3002
+          initialDelaySeconds: 15
+          periodSeconds: 20

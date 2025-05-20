@@ -2,15 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-service
+  namespace: instapay-dev
+  labels:
+    app: user-service
+    environment: dev
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: user-service
+      environment: dev
   template:
     metadata:
       labels:
         app: user-service
+        environment: dev
     spec:
       containers:
       - name: user-service
@@ -19,7 +25,7 @@ spec:
         - containerPort: 3001
         envFrom:
         - configMapRef:
-            name: user-service-config
+            name: user-service-configmap
         - secretRef:
             name: postgres-secret
         env:
@@ -38,9 +44,17 @@ spec:
               secretKeyRef:
                 name: postgres-secret
                 key: JWT_SECRET
+          - name: ENV
+            value: "dev"
         readinessProbe:
           httpGet:
             path: /health
             port: 3001
           initialDelaySeconds: 5
           periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3001
+          initialDelaySeconds: 15
+          periodSeconds: 20

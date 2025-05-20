@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reporting-service-config
+data:
+  DB_USER:                      admin
+  DB_HOST:                      postgres
+  DB_NAME_REPORTING_SERVICE:    reporting-service-staging
+  ENV:                          staging

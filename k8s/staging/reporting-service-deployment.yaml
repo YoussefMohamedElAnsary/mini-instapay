@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reporting-service
+  namespace: instapay-staging
+  labels:
+    app: reporting-service
+    environment: staging
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: reporting-service
+      environment: staging
+  template:
+    metadata:
+      labels:
+        app: reporting-service
+        environment: staging
+    spec:
+      containers:
+      - name: reporting-service
+        image: instapay/reporting-service:staging
+        ports:
+        - containerPort: 3003
+        envFrom:
+        - configMapRef:
+            name: reporting-service-config
+        - secretRef:
+            name: postgres-secret
+        env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: POSTGRES_ADMIN_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: DB_PASSWORD
+          - name: ENV
+            value: "staging"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3003
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3003
+          initialDelaySeconds: 15
+          periodSeconds: 20

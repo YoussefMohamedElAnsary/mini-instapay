@@ -2,19 +2,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
+  namespace: instapay-dev
+  labels:
+    app: postgres
+    environment: dev
 spec:
-  replicas: 1
+  replicas: 1  
   selector:
     matchLabels:
       app: postgres
+      environment: dev
   template:
     metadata:
       labels:
         app: postgres
+        environment: dev
     spec:
       containers:
       - name: postgres
         image: postgres:17
+        ports:
+        - containerPort: 5432
         env:
         - name: POSTGRES_USER
           valueFrom:
@@ -46,11 +54,35 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: POSTGRES_ADMIN_PASSWORD
+        - name: ENV
+          value: "dev"
+        - name: PGPORT
+          value: "5432"
         volumeMounts:
         - name: initdb-scripts
           mountPath: /docker-entrypoint-initdb.d
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - admin
+            - -p
+            - "5432"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - admin
+            - -p
+            - "5432"
+          initialDelaySeconds: 5
+          periodSeconds: 5
       volumes:
       - name: postgres-storage
         persistentVolumeClaim:

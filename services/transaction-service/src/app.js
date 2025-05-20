@@ -7,7 +7,7 @@ const axios = require("axios"); // For inter-service communication
 const path = require("path");
 
 // Load environment variables
-const env = process.env.NODE_ENV || "dev";
+const env = process.env.ENV || "dev";
 const envPath = path.resolve(__dirname, "../../../envs/.env." + env);
 require("dotenv").config({ path: envPath });
 console.log(`Loaded .env file from: ${envPath}`);
@@ -33,7 +33,7 @@ app.post("/api/transactions", async (req, res) => {
     // Log the environment variables and request data
     console.log("Environment variables:", {
       USER_SERVICE_URL: process.env.USER_SERVICE_URL,
-      NODE_ENV: process.env.NODE_ENV
+      NODE_ENV: process.env.ENV
     });
     console.log("Transaction request data:", {
       senderUserId,

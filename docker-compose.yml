@@ -5,7 +5,7 @@ services:
   postgres:
     image: postgres:17
     ports:
-      - 5433:5432
+      - 5432:5432
     env_file: ./envs/.env.${ENV}
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -47,11 +47,8 @@ services:
       - transaction-service
       - reporting-service
     restart: always
-    environment:
-      # - VITE_API_URL=${VITE_API_URL}
-      - NODE_ENV=${NODE_ENV}
     env_file:
-      - ./envs/.env.dev
+      - ./envs/.env.${ENV}
 
   user-service:
     build:
@@ -71,7 +68,6 @@ services:
       - DB_HOST=${DB_HOST} 
       - DB_NAME=user-service-${ENV}
       - DB_NAME_USER_SERVICE=user-service-${ENV}
-      - NODE_ENV=${ENV}
 
   transaction-service:
     build:
@@ -91,7 +87,6 @@ services:
       - DB_HOST=${DB_HOST}
       - DB_NAME=transaction-service-${ENV}
       - DB_NAME_TRANSACTION_SERVICE=transaction-service-${ENV}
-      - NODE_ENV=${ENV}
 
   reporting-service:
     build:
@@ -111,7 +106,6 @@ services:
       - DB_HOST=${DB_HOST}
       - DB_NAME=reporting-service-${ENV}
       - DB_NAME_REPORTING_SERVICE=reporting-service-${ENV}
-      - NODE_ENV=${ENV}
 
   user-service-migrations:
     build: ./services/user-service
@@ -126,7 +120,6 @@ services:
       - DB_HOST=${DB_HOST} 
       - DB_NAME=user-service-${ENV}
       - DB_NAME_USER_SERVICE=user-service-${ENV}
-      - NODE_ENV=${ENV}
     command: npx sequelize-cli db:migrate --env ${ENV} --config /app/config/config.js
 
   transaction-service-migrations:
@@ -142,7 +135,6 @@ services:
       - DB_HOST=${DB_HOST}
       - DB_NAME=transaction-service-${ENV}
       - DB_NAME_TRANSACTION_SERVICE=transaction-service-${ENV}
-      - NODE_ENV=${ENV}
     command: npx sequelize-cli db:migrate --env ${ENV} --config /app/config/config.js
 
   reporting-service-migrations:
@@ -158,7 +150,6 @@ services:
       - DB_HOST=${DB_HOST}
       - DB_NAME=reporting-service-${ENV}
       - DB_NAME_REPORTING_SERVICE=reporting-service-${ENV}
-      - NODE_ENV=${ENV}
     command: npx sequelize-cli db:migrate --env ${ENV} --config /app/config/config.js
 
 volumes:

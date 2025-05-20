@@ -1,9 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: user-service-config
+  name: user-service-configmap
+  namespace: instapay-dev
 data:
   DB_USER:                   admin
   DB_HOST:                   postgres
+  DB_PORT:                   "5432"
   DB_NAME_USER_SERVICE:      user-service-dev
-  NODE_ENV:                  dev
+  ENV:                       dev

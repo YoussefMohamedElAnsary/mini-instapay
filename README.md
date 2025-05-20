@@ -7,19 +7,16 @@ Set the environment variable for the desired environment:
 - **Development environment**:
   ```powershell
   $env:ENV="dev"
-  $env:NODE_ENV="dev"
   ```
 
 - **Production environment**:
   ```powershell
   $env:ENV="prod"
-  $env:NODE_ENV="prod"
   ```
 
 - **Staging environment**:
   ```powershell
   $env:ENV="staging"
-  $env:NODE_ENV="staging"
   ```
 
 Then run:
@@ -28,7 +25,7 @@ Then run:
 docker-compose up -d --build
 ```
 ```ubuntu docker compose
-ENV="dev" NODE_ENV="dev" docker compose up -d --build
+ENV="dev" docker compose up -d --build
 ```
 ```ubuntu kubernetes
 minikube start --driver=docker

@@ -2,7 +2,7 @@
 
 const { Sequelize, DataTypes } = require("sequelize");
 const TransactionModel = require("./transaction");
-const env = process.env.NODE_ENV || "dev";
+const env = process.env.ENV || "dev";
 const config = require(__dirname + "/../config/config.js")[env];
 
 let sequelize;

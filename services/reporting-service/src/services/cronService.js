@@ -27,7 +27,7 @@ const getAllUsers = async () => {
 };
 
 // Helper function to determine if we're in production
-const isProduction = () => process.env.NODE_ENV === 'prod';
+const isProduction = () => process.env.ENV === 'prod';
 
 // Generate daily reports for all users
 const generateDailyReports = async () => {
@@ -116,17 +116,17 @@ if (isProduction()) {
   });
 } else {
   // Development and Staging schedules
-  console.log(`Initializing ${process.env.NODE_ENV} report schedules...`);
+  console.log(`Initializing ${process.env.ENV} report schedules...`);
   
   // "Daily" reports every 3 minutes
   cron.schedule('*/3 * * * *', () => {
-    console.log(`Running daily report generation (every 3 minutes) in ${process.env.NODE_ENV}...`);
+    console.log(`Running daily report generation (every 3 minutes) in ${process.env.ENV}...`);
     generateDailyReports();
   });
 
   // "Weekly" reports every 6 minutes
   cron.schedule('*/6 * * * *', () => {
-    console.log(`Running weekly report generation (every 6 minutes) in ${process.env.NODE_ENV}...`);
+    console.log(`Running weekly report generation (every 6 minutes) in ${process.env.ENV}...`);
     generateWeeklyReports();
   });
 }

@@ -2,15 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reporting-service
+  namespace: instapay-dev
+  labels:
+    app: reporting-service
+    environment: dev
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: reporting-service
+      environment: dev
   template:
     metadata:
       labels:
         app: reporting-service
+        environment: dev
     spec:
       containers:
       - name: reporting-service
@@ -19,12 +25,21 @@ spec:
         - containerPort: 3003
         envFrom:
         - configMapRef:
-            name: reporting-service-config
+            name: reporting-service-configmap
         - secretRef:
             name: postgres-secret
+        env:
+          - name: ENV
+            value: "dev"
         readinessProbe:
           httpGet:
             path: /health
             port: 3003
           initialDelaySeconds: 5
           periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3003
+          initialDelaySeconds: 15
+          periodSeconds: 20

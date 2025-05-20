@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: instapay-staging
+  labels:
+    app: postgres
+    environment: staging
+spec:
+  replicas: 1  
+  selector:
+    matchLabels:
+      app: postgres
+      environment: staging
+  template:
+    metadata:
+      labels:
+        app: postgres
+        environment: staging
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:17
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_ADMIN_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_ADMIN_PASSWORD
+        - name: POSTGRES_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_ADMIN_USER
+        - name: POSTGRES_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_ADMIN_PASSWORD
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_ADMIN_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_ADMIN_PASSWORD
+        volumeMounts:
+        - name: initdb-scripts
+          mountPath: /docker-entrypoint-initdb.d
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+      - name: initdb-scripts
+        configMap:
+          name: postgres-initdb-configmap
