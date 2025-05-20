@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
     try {
       if (!token) return;
 
-      const res = await axios.get("http://dev.instapay.com/api/profile", {
+      const res = await axios.get("http://dev.instapay.com/api/users/profile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
