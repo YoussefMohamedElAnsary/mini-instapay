@@ -4,9 +4,8 @@ metadata:
   name: transaction-service-configmap
   namespace: instapay-dev
 data:
-  DB_USER:                   admin
-  DB_HOST:                   postgres
-  DB_PORT:                   "5432"
+  DB_USER: admin
+  DB_HOST: postgres
   DB_NAME_TRANSACTION_SERVICE: transaction-service-dev
   ENV:                       dev
   TRANSACTION_SERVICE_URL: http://transaction-service:3002

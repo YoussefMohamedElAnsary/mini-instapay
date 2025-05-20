@@ -39,12 +39,10 @@ function Report() {
   useEffect(() => {
     fetchReports();
     
-    // Set up interval to fetch reports every 3 minutes
     const interval = setInterval(() => {
       fetchReports();
     }, 1 * 60 * 1000); // 1 minute in milliseconds
 
-    // Cleanup interval on component unmount
     return () => clearInterval(interval);
   }, [])
 
@@ -56,19 +54,25 @@ function Report() {
     }
 
     const startDate = new Date(startsearchdate)
+    startDate.setHours(0, 0, 0, 0)
+    
     const endDate = new Date(endsearchdate)
+    endDate.setHours(23, 59, 59, 999)
+    
 
     if (startDate > endDate) {
       alert("Start date cannot be after end date")
       return
     }
 
-
     const filtered = reports.filter(report => {
-      const reportStartDate = new Date(report.startDate.split('-').reverse().join('-'))
-      const reportEndDate = new Date(report.endDate.split('-').reverse().join('-'))
       
-      return reportStartDate >= startDate && reportEndDate <= endDate
+      const reportStartDate = new Date(report.startDate)
+      const reportEndDate = new Date(report.endDate)
+      
+      
+      const isInRange = reportStartDate >= startDate && reportEndDate <= endDate
+      return isInRange
     })
 
     setFilteredReports(filtered)
