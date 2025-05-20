@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3003/api/reports';
+const API_URL = 'api/reports';
 
 const getReports = async () => {
     try {
