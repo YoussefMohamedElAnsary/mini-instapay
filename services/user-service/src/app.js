@@ -12,23 +12,25 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK' });
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK" });
 });
 
 app.get("/api/users", async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: { exclude: ['password'] }
+      attributes: { exclude: ["password"] },
     });
     res.status(200).json(users);
   } catch (error) {
     console.error("Fetch All Users Error:", error.message);
-    res.status(500).json({ message: "Failed to fetch users", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch users", error: error.message });
   }
 });
 
-app.get("/api/profile", require("./middlewares/auth"), (req, res) => {
+app.get("/api/users/profile", require("./middlewares/auth"), (req, res) => {
   res.json({ user: req.user.toJSON() });
 });
 
@@ -36,21 +38,25 @@ app.post("/api/user/update-balance", async (req, res) => {
   const { senderUserId, receiverUserId, amount } = req.body;
 
   try {
-    // Parse amount to ensure it's a valid number 
+    // Parse amount to ensure it's a valid number
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount)) {
       return res.status(400).json({ message: "Invalid amount format" });
     }
 
-    console.log(`Updating balances: ${senderUserId} -> ${receiverUserId}, amount: ${parsedAmount}`);
+    console.log(
+      `Updating balances: ${senderUserId} -> ${receiverUserId}, amount: ${parsedAmount}`
+    );
 
     // Fetch sender and receiver
     const sender = await User.findByPk(senderUserId);
     const receiver = await User.findByPk(receiverUserId);
 
-    console.log('Before update -', { 
-      sender: sender ? { id: sender.id, balance: sender.balance } : 'not found', 
-      receiver: receiver ? { id: receiver.id, balance: receiver.balance } : 'not found'
+    console.log("Before update -", {
+      sender: sender ? { id: sender.id, balance: sender.balance } : "not found",
+      receiver: receiver
+        ? { id: receiver.id, balance: receiver.balance }
+        : "not found",
     });
 
     if (!sender || !receiver) {
@@ -68,7 +74,9 @@ app.post("/api/user/update-balance", async (req, res) => {
 
     // Calculate new balances
     const newSenderBalance = (currentSenderBalance - parsedAmount).toFixed(2);
-    const newReceiverBalance = (currentReceiverBalance + parsedAmount).toFixed(2);
+    const newReceiverBalance = (currentReceiverBalance + parsedAmount).toFixed(
+      2
+    );
 
     // Update balances
     sender.balance = newSenderBalance;
@@ -78,15 +86,15 @@ app.post("/api/user/update-balance", async (req, res) => {
     await sender.save();
     await receiver.save();
 
-    console.log('After update -', { 
-      sender: { id: sender.id, balance: sender.balance }, 
-      receiver: { id: receiver.id, balance: receiver.balance }
+    console.log("After update -", {
+      sender: { id: sender.id, balance: sender.balance },
+      receiver: { id: receiver.id, balance: receiver.balance },
     });
 
-    res.status(200).json({ 
+    res.status(200).json({
       message: "Balances updated successfully",
       sender: { id: sender.id, newBalance: sender.balance },
-      receiver: { id: receiver.id, newBalance: receiver.balance }
+      receiver: { id: receiver.id, newBalance: receiver.balance },
     });
   } catch (error) {
     console.error("Update Balance Error:", error.message);
@@ -128,7 +136,9 @@ app.get("/api/users/:userId", async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     console.error("Fetch User By ID Error:", error.message);
-    res.status(500).json({ message: "Failed to fetch user", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch user", error: error.message });
   }
 });
 
