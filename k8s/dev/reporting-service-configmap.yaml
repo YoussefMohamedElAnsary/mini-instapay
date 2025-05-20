@@ -4,8 +4,9 @@ metadata:
   name: reporting-service-configmap
   namespace: instapay-dev
 data:
-  DB_USER:                   admin
-  DB_HOST:                   postgres
-  DB_PORT:                   "5432"
+  DB_USER: admin
+  DB_HOST: postgres
   DB_NAME_REPORTING_SERVICE: reporting-service-dev
-  ENV:                       dev
+  NODE_ENV: dev
+  USER_SERVICE_URL: http://user-service:3001
+  TRANSACTION_SERVICE_URL: http://reporting-service:3003
