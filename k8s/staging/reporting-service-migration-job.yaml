@@ -2,6 +2,8 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: reporting-service-migration
+  namespace: instapay-staging
+
 spec:
   template:
     spec:

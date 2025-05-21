@@ -2,14 +2,16 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-initdb-configmap
+  namespace: instapay-staging
+
 data:
   init-db.sh: |
     #!/bin/bash
     set -e
 
 
-    ENV=${ENV:-dev}
-    
+    ENV=${ENV:-staging}
+
 
     psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
       DO

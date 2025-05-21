@@ -2,9 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: transaction-service
+  namespace: instapay-prod
+
 spec:
   selector:
     app: transaction-service
   ports:
-  - port: 3002
-    targetPort: 3002
+    - port: 3002
+      targetPort: 3002

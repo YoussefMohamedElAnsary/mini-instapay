@@ -2,17 +2,28 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: reporting-service-migration
+  namespace: instapay-prod
+
 spec:
   template:
     spec:
       containers:
-      - name: migrate
-        image: instapay/reporting-service:prod
-        command: ["npx", "sequelize-cli", "db:migrate", "--env", "prod", "--config", "/app/config/config.js"]
-        envFrom:
-        - configMapRef:
-            name: reporting-service-config
-        - secretRef:
-            name: postgres-secret
+        - name: migrate
+          image: instapay/reporting-service:prod
+          command:
+            [
+              "npx",
+              "sequelize-cli",
+              "db:migrate",
+              "--env",
+              "prod",
+              "--config",
+              "/app/config/config.js",
+            ]
+          envFrom:
+            - configMapRef:
+                name: reporting-service-config
+            - secretRef:
+                name: postgres-secret
       restartPolicy: Never
   backoffLimit: 2

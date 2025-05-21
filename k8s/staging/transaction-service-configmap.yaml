@@ -2,8 +2,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: transaction-service-config
+  namespace: instapay-staging
+
 data:
-  DB_USER:                       admin
-  DB_HOST:                       postgres
-  DB_NAME_TRANSACTION_SERVICE:   transaction-service-staging
-  ENV:                           staging
+  DB_USER: admin
+  DB_HOST: postgres
+  DB_NAME_TRANSACTION_SERVICE: transaction-service-staging
+  ENV: staging

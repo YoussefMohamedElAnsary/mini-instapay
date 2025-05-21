@@ -2,8 +2,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: reporting-service-config
+  namespace: instapay-prod
+
 data:
-  DB_USER:                      admin
-  DB_HOST:                      postgres
-  DB_NAME_REPORTING_SERVICE:    reporting-service-prod
-  ENV:                          prod
+  DB_USER: admin
+  DB_HOST: postgres
+  DB_NAME_REPORTING_SERVICE: reporting-service-prod
+  ENV: prod
