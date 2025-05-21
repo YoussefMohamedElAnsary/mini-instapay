@@ -1,67 +1,71 @@
-# Mini-Instapay Project
+# Mini-InstaPay
 
-## Running the Application with Docker Compose
+A microservices-based payment processing system built with modern cloud technologies.
 
-Set the environment variable for the desired environment:
+## Overview
 
-- **Development environment**:
-  ```powershell
-  $env:ENV="dev"
-  ```
+Mini-InstaPay is a distributed payment processing system that demonstrates the implementation of microservices architecture using Docker and Kubernetes. The system is designed to handle payment transactions with high reliability and scalability.
 
-- **Production environment**:
-  ```powershell
-  $env:ENV="prod"
-  ```
+## Project Structure
 
-- **Staging environment**:
-  ```powershell
-  $env:ENV="staging"
-  ```
-
-Then run:
-
-```powershell
-docker-compose up -d --build
 ```
-```ubuntu docker compose
-ENV="dev" docker compose up -d --build
-```
-```ubuntu kubernetes
-minikube start --driver=docker
-kubectl apply -f ./k8s/dev/
-```
-```to check tables in ubuntu terminal
-psql "postgresql://admin:admin@localhost:5433/user-service-dev"
-\dt             To view available tables
-SELECT * FROM users;
+.
+├── services/           # Microservices source code
+├── k8s/               # Kubernetes configuration files
+├── envs/              # Environment configuration files
+├── docs/              # Project documentation
+├── docker-compose.yml # Docker Compose configuration
+├── deploy-dev.sh      # Development deployment script
+└── init-db.sh         # Database initialization script
 ```
 
-## To Run Migrations for Specific Environments
+## Prerequisites
 
-- **Development environment**:
-  ```powershell
-  ENV=dev docker-compose run --rm user-service-migrations
-  ENV=dev docker-compose run --rm transaction-service-migrations
-  ENV=dev docker-compose run --rm reporting-service-migrations
-  ```
+- Docker
+- Docker Compose
+- Kubernetes (for production deployment)
+- Node.js (for local development)
 
-- **Staging environment**:
-  ```powershell
-  ENV=staging docker-compose run --rm user-service-migrations
-  ENV=staging docker-compose run --rm transaction-service-migrations
-  ENV=staging docker-compose run --rm reporting-service-migrations
-  ```
+## Quick Start
 
-- **Production environment**:
-  ```powershell
-  ENV=prod docker-compose run --rm user-service-migrations
-  ENV=prod docker-compose run --rm transaction-service-migrations
-  ENV=prod docker-compose run --rm reporting-service-migrations
-  ```
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd mini-instapay
+   ```
 
-## To run Kubernetes dev env:
-kubectl apply -f k8s/dev/
+2. Set up environment variables:
+   ```bash
+   cp envs/.env.example envs/.env
+   # Edit envs/.env with your configuration
+   ```
 
-## To delete Kubernetes dev env:
-kubectl delete -f k8s/dev/
+3. Start the development environment:
+   ```bash
+   ./deploy-dev.sh
+   ```
+
+4. Initialize the database:
+   ```bash
+   ./init-db.sh
+   ```
+
+## Development
+
+For local development, the project uses Docker Compose to orchestrate the services. Each service can be developed independently and tested using the provided development environment.
+
+## Deployment
+
+The project includes Kubernetes configurations for production deployment. The deployment process is automated through the provided scripts and configurations in the `k8s/` directory.
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
